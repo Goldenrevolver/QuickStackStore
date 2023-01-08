@@ -144,7 +144,7 @@ namespace QuickStackStore
             sectionName = "0 - General";
 
             GeneralConfig.OverrideButtonDisplay = Config.Bind(sectionName, nameof(GeneralConfig.OverrideButtonDisplay), OverrideButtonDisplay.UseIndividualConfigOptions, "Override to disable all new UI elements no matter the current individual setting of each of them.");
-            GeneralConfig.OverrideButtonDisplay.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin, true);
+            GeneralConfig.OverrideButtonDisplay.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonRelevantSettingChanged(plugin, true);
 
             GeneralConfig.OverrideHotkeyBarBehavior = Config.Bind(sectionName, nameof(GeneralConfig.OverrideHotkeyBarBehavior), OverrideHotkeyBarBehavior.NeverAffectHotkeyBar, "Override to never affect the hotkey bar with any feature no matter the individual setting of each of them. Recommended to turn off if you are actually using favoriting.");
             GeneralConfig.OverrideKeybindBehavior = Config.Bind(sectionName, nameof(GeneralConfig.OverrideKeybindBehavior), OverrideKeybindBehavior.UseIndividualConfigOptions, "Override to disable all new keybinds no matter the current individual setting of each of them.");
@@ -183,7 +183,7 @@ namespace QuickStackStore
             BorderColorTrashFlaggedItemOnFavoritedSlot = Config.Bind(sectionName, nameof(BorderColorTrashFlaggedItemOnFavoritedSlot), Color.black, "Color of the border of a favorited slot that also contains a trash flagged item.");
 
             DisplayFavoriteToggleButton = Config.Bind(sectionName, nameof(DisplayFavoriteToggleButton), FavoritingToggling.Disabled, $"Whether to display a button to toggle favoriting mode on or off, allowing to favorite without holding any hotkey ({overrideButton}). This can also be used to trash flag. The hotkeys work independently.");
-            DisplayFavoriteToggleButton.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+            DisplayFavoriteToggleButton.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonRelevantSettingChanged(plugin);
 
             if (TryGetOldConfigValue(new ConfigDefinition(sectionName, "FavoritingModifierToggles"), ref oldValue))
             {
@@ -203,7 +203,7 @@ namespace QuickStackStore
             sectionName = "2.1 - Quick Stacking";
 
             DisplayQuickStackButtons = Config.Bind(sectionName, nameof(DisplayQuickStackButtons), ShowTwoButtons.BothButDependingOnContext, twoButtons);
-            DisplayQuickStackButtons.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+            DisplayQuickStackButtons.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonRelevantSettingChanged(plugin);
 
             QuickStackHotkeyBehaviorWhenContainerOpen = Config.Bind(sectionName, nameof(QuickStackHotkeyBehaviorWhenContainerOpen), QuickStackBehavior.QuickStackOnlyToCurrentContainer, hotkey);
             QuickStackIncludesHotkeyBar = Config.Bind(sectionName, nameof(QuickStackIncludesHotkeyBar), true, $"Whether to also quick stack items from the hotkey bar ({overrideHotkeyBar}).");
@@ -217,7 +217,7 @@ namespace QuickStackStore
             sectionName = "2.2 - Quick Restocking";
 
             DisplayRestockButtons = Config.Bind(sectionName, nameof(DisplayRestockButtons), ShowTwoButtons.BothButDependingOnContext, twoButtons);
-            DisplayRestockButtons.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+            DisplayRestockButtons.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonRelevantSettingChanged(plugin);
 
             RestockFromNearbyRange = Config.Bind(sectionName, nameof(RestockFromNearbyRange), 10f, range);
             RestockHotkeyBehaviorWhenContainerOpen = Config.Bind(sectionName, nameof(RestockHotkeyBehaviorWhenContainerOpen), RestockBehavior.RestockOnlyFromCurrentContainer, hotkey);
@@ -232,7 +232,7 @@ namespace QuickStackStore
             ChestsUseImprovedTakeAllLogic = Config.Bind(sectionName, nameof(ChestsUseImprovedTakeAllLogic), true, "Whether to use the improved logic for 'Take All' for non tomb stones. Disable if needed for compatibility.");
 
             DisplayStoreAllButton = Config.Bind(sectionName, nameof(DisplayStoreAllButton), true, $"Whether to display the 'Store All' button in containers ({overrideButton}).");
-            DisplayStoreAllButton.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+            DisplayStoreAllButton.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonRelevantSettingChanged(plugin);
 
             NeverMoveTakeAllButton = Config.Bind(sectionName, nameof(NeverMoveTakeAllButton), false, "Disallows my mod from moving the 'Take All' button. Enable for compatibility with other mods. If it was already moved, then you need to log out and back in (since I don't even allow to reset the position, since I don't know if that position is valid with your installed mods).");
 
@@ -244,10 +244,10 @@ namespace QuickStackStore
             AutoSort = Config.Bind(sectionName, nameof(AutoSort), AutoSortBehavior.Never, "Automatically let the mod sort the player inventory every time you open it, as well as every container you open. This respects your other sorting config options.");
 
             DisplaySortButtons = Config.Bind(sectionName, nameof(DisplaySortButtons), ShowTwoButtons.Both, twoButtons);
-            DisplaySortButtons.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+            DisplaySortButtons.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonRelevantSettingChanged(plugin);
 
             DisplaySortCriteriaInLabel = Config.Bind(sectionName, nameof(DisplaySortCriteriaInLabel), false, "Whether to display the current sort criteria in the inventory sort button as a reminder. The author thinks the button is a bit too small for it to look good.");
-            DisplaySortCriteriaInLabel.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+            DisplaySortCriteriaInLabel.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonRelevantSettingChanged(plugin);
 
             SortCriteria = Config.Bind(sectionName, nameof(SortCriteria), SortCriteriaEnum.Type, "The sort criteria the sort button uses. Ties are broken by internal name, quality and stack size.");
             SortHotkeyBehaviorWhenContainerOpen = Config.Bind(sectionName, nameof(SortHotkeyBehaviorWhenContainerOpen), SortBehavior.OnlySortContainer, hotkey);
@@ -262,7 +262,7 @@ namespace QuickStackStore
             AlwaysConsiderTrophiesTrashFlagged = Config.Bind(sectionName, nameof(AlwaysConsiderTrophiesTrashFlagged), false, "Whether to always consider trophies as trash flagged, allowing for immediate trashing or to be affected by quick trashing.");
 
             DisplayTrashCanUI = Config.Bind(sectionName, nameof(DisplayTrashCanUI), true, $"Whether to display the trash can UI element ({overrideButton}). Hotkeys work independently.");
-            DisplayTrashCanUI.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin, true);
+            DisplayTrashCanUI.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonRelevantSettingChanged(plugin, true);
 
             EnableQuickTrash = Config.Bind(sectionName, nameof(EnableQuickTrash), true, "Whether quick trashing can be called with the hotkey or be clicking on the trash can while not holding anything.");
             QuickTrashHotkey = Config.Bind(sectionName, nameof(QuickTrashHotkey), KeyCode.None, $"The hotkey to perform a quick trash on the player inventory, deleting all trash flagged items ({overrideHotkey}).");
@@ -283,46 +283,46 @@ namespace QuickStackStore
             sectionName = "9 - Localization";
 
             TrashLabel = Config.Bind(sectionName, nameof(TrashLabel), string.Empty, string.Empty);
-            TrashLabel.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            TrashLabel.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             QuickStackLabel = Config.Bind(sectionName, nameof(QuickStackLabel), string.Empty, string.Empty);
-            QuickStackLabel.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            QuickStackLabel.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             StoreAllLabel = Config.Bind(sectionName, nameof(StoreAllLabel), string.Empty, string.Empty);
-            StoreAllLabel.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            StoreAllLabel.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             TakeAllLabel = Config.Bind(sectionName, nameof(TakeAllLabel), string.Empty, string.Empty);
-            TakeAllLabel.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            TakeAllLabel.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             RestockLabel = Config.Bind(sectionName, nameof(RestockLabel), string.Empty, string.Empty);
-            RestockLabel.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            RestockLabel.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             SortLabel = Config.Bind(sectionName, nameof(SortLabel), string.Empty, string.Empty);
-            SortLabel.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            SortLabel.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             QuickStackLabelCharacter = Config.Bind(sectionName, nameof(QuickStackLabelCharacter), string.Empty, string.Empty);
-            QuickStackLabelCharacter.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            QuickStackLabelCharacter.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             SortLabelCharacter = Config.Bind(sectionName, nameof(SortLabelCharacter), string.Empty, string.Empty);
-            SortLabelCharacter.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            SortLabelCharacter.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             RestockLabelCharacter = Config.Bind(sectionName, nameof(RestockLabelCharacter), string.Empty, string.Empty);
-            RestockLabelCharacter.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            RestockLabelCharacter.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             SortByInternalNameLabel = Config.Bind(sectionName, nameof(SortByInternalNameLabel), string.Empty, string.Empty);
-            SortByInternalNameLabel.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            SortByInternalNameLabel.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             SortByTranslatedNameLabel = Config.Bind(sectionName, nameof(SortByTranslatedNameLabel), string.Empty, string.Empty);
-            SortByTranslatedNameLabel.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            SortByTranslatedNameLabel.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             SortByValueLabel = Config.Bind(sectionName, nameof(SortByValueLabel), string.Empty, string.Empty);
-            SortByValueLabel.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            SortByValueLabel.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             SortByWeightLabel = Config.Bind(sectionName, nameof(SortByWeightLabel), string.Empty, string.Empty);
-            SortByWeightLabel.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            SortByWeightLabel.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             SortByTypeLabel = Config.Bind(sectionName, nameof(SortByTypeLabel), string.Empty, string.Empty);
-            SortByTypeLabel.SettingChanged += (a, b) => ButtonRenderer.OnButtonTextTranslationSettingChanged();
+            SortByTypeLabel.SettingChanged += (a, b) => ButtonRenderer.manager.OnButtonTextTranslationSettingChanged();
 
             QuickStackResultMessageNothing = Config.Bind(sectionName, nameof(QuickStackResultMessageNothing), string.Empty, string.Empty);
             QuickStackResultMessageNone = Config.Bind(sectionName, nameof(QuickStackResultMessageNone), string.Empty, string.Empty);
@@ -398,6 +398,37 @@ namespace QuickStackStore
 
             return false;
         }
+
+        #region Display Helper Methods
+
+        public static bool CanDisplayInventorySortButton => DisplaySortButtons.Value != ShowTwoButtons.OnlyContainerButton;
+
+        public static bool CanDisplayContainerSortButton => DisplaySortButtons.Value != ShowTwoButtons.OnlyInventoryButton;
+
+        public static bool CanDisplayInventoryQuickStackButton => DisplayQuickStackButtons.Value != ShowTwoButtons.OnlyContainerButton;
+
+        public static bool CanDisplayContainerQuickStackButton => DisplayQuickStackButtons.Value != ShowTwoButtons.OnlyInventoryButton;
+
+        public static bool CanDisplayInventoryRestockButton => DisplayRestockButtons.Value != ShowTwoButtons.OnlyContainerButton;
+
+        public static bool CanDisplayContainerRestockButton => DisplayRestockButtons.Value != ShowTwoButtons.OnlyInventoryButton;
+
+        public static bool CanDisplayStoreAllButton => DisplayStoreAllButton.Value;
+
+        public static bool CanDisplayTrashCanUI => DisplayTrashCanUI.Value;
+
+        public static bool CanDisplayFavoriteToggleButton => DisplayFavoriteToggleButton.Value != FavoritingToggling.Disabled;
+
+        public static bool CanDisplaySortCriteriaInLabel => DisplaySortCriteriaInLabel.Value;
+
+        public static bool CanMoveTakeAllButton => !NeverMoveTakeAllButton.Value;
+
+        public static bool ShouldAutoSortInventory => AutoSort.Value == AutoSortBehavior.SortPlayerInventoryOnOpen
+                                                   || AutoSort.Value == AutoSortBehavior.Both;
+
+        public static bool ShouldAutoSortContainer => AutoSort.Value == AutoSortBehavior.SortContainerOnOpen
+                                                   || AutoSort.Value == AutoSortBehavior.Both;
+        #endregion
 
         public enum OverrideButtonDisplay
         {

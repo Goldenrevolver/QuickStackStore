@@ -10,68 +10,57 @@ namespace QuickStackStore
     internal static class BorderRenderer
     {
         public static Sprite border;
+        private static bool imagesCreated = false;
 
+        [HarmonyPriority(Priority.LowerThanNormal)]
         [HarmonyPatch(nameof(InventoryGrid.UpdateGui))]
         [HarmonyPostfix]
-        internal static void UpdateGui(Player player, Inventory ___m_inventory, List<InventoryGrid.Element> ___m_elements)
+        internal static void PostFix(InventoryGrid __instance)
         {
-            if (player == null || player.m_inventory != ___m_inventory)
-            {
-                return;
-            }
 
-            int width = ___m_inventory.GetWidth();
+            Player player = Player.m_localPlayer;
+            if (player == null || player.m_inventory != __instance.GetInventory())
+                return;
+
+            Inventory inventory = __instance.GetInventory();
+            List<InventoryGrid.Element> elements = __instance.m_elements;
             UserConfig playerConfig = UserConfig.GetPlayerConfig(player.GetPlayerID());
 
-            for (int y = 0; y < ___m_inventory.GetHeight(); y++)
+            // Process Inventory Slots
+            int width = inventory.GetWidth();
+            for (int y = 0; y < inventory.GetHeight(); y++)
             {
-                for (int x = 0; x < ___m_inventory.GetWidth(); x++)
+                for (int x = 0; x < inventory.GetWidth(); x++)
                 {
                     int index = y * width + x;
 
-                    Image img;
+                    Image img = elements[index].m_go.transform.Find("favorite")?.GetComponent<Image>();
 
-                    if (___m_elements[index].m_queued.transform.childCount > 0)
-                    {
-                        img = ___m_elements[index].m_queued.transform.GetChild(0).GetComponent<Image>();
-                    }
-                    else
-                    {
-                        img = CreateBorderImage(___m_elements[index].m_queued);
-                    }
+                    if (img is null)
+                        img = CreateBorderImage(elements[index].m_go.transform, elements[index]);
 
                     img.color = FavoriteConfig.BorderColorFavoritedSlot.Value;
                     img.enabled = playerConfig.IsSlotFavorited(new Vector2i(x, y));
                 }
             }
 
-            foreach (ItemDrop.ItemData itemData in ___m_inventory.m_inventory)
+            // Process Inventory Items
+            foreach (ItemDrop.ItemData itemData in inventory.m_inventory)
             {
                 int index = itemData.GridVectorToGridIndex(width);
 
-                Image img;
-
-                if (___m_elements[index].m_queued.transform.childCount > 0)
-                {
-                    img = ___m_elements[index].m_queued.transform.GetChild(0).GetComponent<Image>();
-                }
-                else
-                {
-                    img = CreateBorderImage(___m_elements[index].m_queued);
-                }
+                Image img = elements[index].m_go.transform.Find("favorite").GetComponent<Image>();
+                if (img is null)
+                    img = CreateBorderImage(elements[index].m_go.transform, elements[index]);
 
                 var isItemFavorited = playerConfig.IsItemNameFavorited(itemData.m_shared);
                 if (isItemFavorited)
                 {
                     // enabled -> slot is favorited
                     if (img.enabled)
-                    {
                         img.color = FavoriteConfig.BorderColorFavoritedItemOnFavoritedSlot.Value;
-                    }
                     else
-                    {
                         img.color = FavoriteConfig.BorderColorFavoritedItem.Value;
-                    }
 
                     // do this at the end of the if statement, so we can use img.enabled to deduce the slot favoriting
                     img.enabled |= isItemFavorited;
@@ -84,13 +73,9 @@ namespace QuickStackStore
                     {
                         // enabled -> slot is favorited
                         if (img.enabled)
-                        {
                             img.color = FavoriteConfig.BorderColorTrashFlaggedItemOnFavoritedSlot.Value;
-                        }
                         else
-                        {
                             img.color = FavoriteConfig.BorderColorTrashFlaggedItem.Value;
-                        }
 
                         // do this at the end of the if statement, so we can use img.enabled to deduce the slot favoriting
                         img.enabled |= isItemTrashFlagged;
@@ -99,13 +84,32 @@ namespace QuickStackStore
             }
         }
 
-        private static Image CreateBorderImage(Image baseImg)
+        private static Image CreateBorderImage(Transform parent, InventoryGrid.Element baseElement)
         {
-            // set m_queued parent as parent first, so the position is correct
-            var obj = Object.Instantiate(baseImg, baseImg.transform.parent);
-            // change the parent to the m_queued image so we can access the new image without a loop
-            obj.transform.SetParent(baseImg.transform);
-            // set the new border image
+            if (border is null)
+            {
+                border = baseElement.m_food.sprite;
+            }
+
+            Image obj = null;
+
+            if (!CompatibilitySupport.HasAuga())
+            {
+                // set m_queued parent as parent first, so the position is correct
+                obj = Object.Instantiate(baseElement.m_queued, parent);
+                // set the new border image
+                obj.sprite = border;
+            }
+            else
+            {
+                obj = Object.Instantiate(baseElement.m_icon, parent);
+                obj.rectTransform.Rotate(Vector3.forward, 90f);
+                obj.rectTransform.anchoredPosition = new Vector2(28, -28);
+                obj.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 7);
+                obj.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 7);
+            }
+
+            obj.name = "favorite";
             obj.sprite = border;
 
             return obj;

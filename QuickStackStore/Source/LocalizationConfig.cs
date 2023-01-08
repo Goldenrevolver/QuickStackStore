@@ -1,5 +1,8 @@
-﻿using BepInEx;
+﻿using System;
+using System.Collections.Generic;
+using BepInEx;
 using BepInEx.Configuration;
+using QuickStackStore.Source.UI;
 
 namespace QuickStackStore
 {
@@ -43,6 +46,30 @@ namespace QuickStackStore
 
         public static ConfigEntry<string> FavoritedItemTooltip;
         public static ConfigEntry<string> TrashFlaggedItemTooltip;
+
+        private static Dictionary<string, Tuple<string, ConfigEntry<string>>> _ConfigLookup = new Dictionary<string, Tuple<string, ConfigEntry<string>>>();
+
+        static LocalizationConfig()
+        {
+            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.quickStackAreaButton), new Tuple<string, ConfigEntry<string>>(nameof(QuickStackLabel), QuickStackLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.quickStackToContainerButton), new Tuple<string, ConfigEntry<string>>(nameof(QuickStackLabel), QuickStackLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.restockAreaButton), new Tuple<string, ConfigEntry<string>>(nameof(RestockLabel), RestockLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.restockFromContainerButton), new Tuple<string, ConfigEntry<string>>(nameof(RestockLabel), RestockLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.sortContainerButton), new Tuple<string, ConfigEntry<string>>(nameof(SortLabel), SortLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.sortInventoryButton), new Tuple<string, ConfigEntry<string>>(nameof(SortLabel), SortLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.storeAllButton), new Tuple<string, ConfigEntry<string>>(nameof(StoreAllLabel), StoreAllLabel));
+        }
+
+        internal static string GetRelevantTranslation(string objectName)
+        {
+            if (_ConfigLookup.TryGetValue(objectName, out Tuple<string, ConfigEntry<string>> config))
+            {
+                if (config.Item2 != null)
+                    return config.Item2.Value;
+                return Localization.instance.Translate($"quickstackstore_{config.Item1.ToLower()}");
+            }
+            return Localization.instance.Translate($"quickstackstore_{objectName.ToLower()}");
+        }
 
         internal static string GetRelevantTranslation(ConfigEntry<string> config, string configName)
         {

@@ -38,6 +38,9 @@
       <HintPath>$(GameDir)\BepInEx\core\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="AugaAPI">
+      <HintPath>$(GameDir)\BepInEx\plugins\AugaAPI.dll</HintPath>
+    </Reference>
     <Reference Include="BepInEx">
       <HintPath>$(GameDir)\BepInEx\core\BepInEx.dll</HintPath>
       <Private>False</Private>
@@ -98,8 +101,11 @@
     <Compile Include="Source\Modules\StoreTakeAllModule.cs" />
     <Compile Include="Source\Modules\SortModule.cs" />
     <Compile Include="Source\QSSConfig.cs" />
+    <Compile Include="Source\UI\AugaButtonRendererManager.cs" />
     <Compile Include="Source\UI\ButtonRenderer.cs" />
     <Compile Include="Source\UI\BorderRenderer.cs" />
+    <Compile Include="Source\UI\ButtonRendererManagerBase.cs" />
+    <Compile Include="Source\UI\DefaultButtonRendererManager.cs" />
     <Compile Include="Source\UI\TooltipRenderer.cs" />
     <Compile Include="Source\Modules\TrashModule.cs" />
     <Compile Include="Source\UserConfig.cs" />

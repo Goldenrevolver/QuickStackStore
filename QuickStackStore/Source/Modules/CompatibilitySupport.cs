@@ -27,6 +27,7 @@ namespace QuickStackStore
         public const string betterArchery = "ishid4.mods.betterarchery";
         public const string smartContainers = "flueno.SmartContainers";
         public const string backpacks = "org.bepinex.plugins.backpacks";
+        public const string auga = "randyknapp.mods.auga";
 
         public static string[] supportedPlugins = new string[]
         {
@@ -36,6 +37,7 @@ namespace QuickStackStore
             odinExInv,
             randy,
             betterArchery,
+            auga,
         };
 
         public static void RegenerateCache()
@@ -117,6 +119,18 @@ namespace QuickStackStore
         public static bool HasPluginThatRequiresMiniButtonVMove()
         {
             return HasPlugin(aeden) || HasPlugin(odinExInv) || HasPlugin(odinPlus);
+        }
+
+        public static bool HasAuga()
+        {
+            if (!HasPlugin(auga))
+                return false;
+
+            if (Assembly.Load("AugaAPI") is null)
+                return false;
+
+            return true;
+            
         }
 
         private static bool IsEquipOrQuickSlotForAedenLike(ref FieldInfo fieldInfo, string assemblyName, string className, string fieldName, int inventoryHeight, Vector2i itemPos, bool checkForRestockableSlots)

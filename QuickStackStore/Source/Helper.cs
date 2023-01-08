@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using static QuickStackStore.QSSConfig;
@@ -8,6 +9,44 @@ namespace QuickStackStore
 {
     public static class Helper
     {
+        /// <summary>
+        /// Fairly useful bit of code for sussing out the layout of the ui tree.
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="maxDepth"></param>
+        public static void DumpComponents(Component parent, int maxDepth = 3)
+        {
+            Debug.Log(DumpComponentsInner(parent, 0, maxDepth));
+        }
+
+        private static string DumpComponentsInner(Component parent, int depth, int maxDepth)
+        {
+            string result = "";
+            string tabs = "";
+
+            for (int i = 0; i < depth; i++)
+                tabs = $"{tabs}\t";
+
+            Component[] children = parent.GetComponentsInChildren<Component>()
+                .Where(c => c.transform.parent.GetInstanceID() == parent.GetInstanceID())
+                .ToArray();
+
+            if (parent.transform is RectTransform pRect)
+            {
+                result = $"{parent}:{parent.GetInstanceID()}[{children?.Length ?? 0}] -> {parent.gameObject.name} ^- {parent.transform.parent}:{parent.transform.parent.GetInstanceID()} [pos:{pRect.rect.position} -- size:{pRect.rect.size}]\n";
+            }
+            else
+            {
+                result = $"{parent}:{parent.GetInstanceID()}[{children?.Length ?? 0}] -> {parent.gameObject.name} ^- {parent.transform.parent}:{parent.transform.parent.GetInstanceID()} [pos:{parent.transform.position}]\n";
+            }
+
+            if (depth < maxDepth)
+                foreach (Component child in children)
+                    result = $"{result}{tabs}{DumpComponentsInner(child, depth + 1, maxDepth)}";
+
+            return result;
+        }
+
         internal static void Log(object s, DebugSeverity debugSeverity = DebugSeverity.Normal)
         {
             if ((int)debugSeverity > (int)(DebugConfig.DebugSeverity?.Value ?? 0))
@@ -67,11 +106,11 @@ namespace QuickStackStore
             {
                 hasCurrentlyToggledFavoriting = value;
 
-                if (ButtonRenderer.favoritingTogglingButtonText != null)
+                if (ButtonRenderer.manager.favoritingTogglingButtonText != null)
                 {
                     var color = ColorUtility.ToHtmlStringRGB(FavoriteConfig.BorderColorFavoritedItem.Value);
 
-                    ButtonRenderer.favoritingTogglingButtonText.text = $"<color=#{color}>{(value ? blackStar : whiteStar)}</color>";
+                    ButtonRenderer.manager.favoritingTogglingButtonText.text = $"<color=#{color}>{(value ? blackStar : whiteStar)}</color>";
                 }
             }
         }
