@@ -1,20 +1,10 @@
-﻿using BepInEx;
-using BepInEx.Configuration;
-using HarmonyLib;
-using QuickStackStore.Source.UI;
-using System.Collections;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
-using static QuickStackStore.CompatibilitySupport;
-using static QuickStackStore.QSSConfig;
+﻿using HarmonyLib;
 
-namespace QuickStackStore
+namespace QuickStackStore.UI.ButtonRenderer
 {
     internal class ButtonRenderer
     {
-        internal static ButtonRendererManagerBase manager;
+        internal static ButtonRendererInstance instance;
 
         [HarmonyPatch(typeof(InventoryGui))]
         internal static class PatchInventoryGui
@@ -29,7 +19,7 @@ namespace QuickStackStore
                 if (__instance != InventoryGui.instance)
                     return;
 
-                manager.CreateGui(__instance);
+                instance.CreateGui(__instance);
             }
         }
     }

@@ -1,6 +1,8 @@
 ﻿using BepInEx;
 using HarmonyLib;
-using QuickStackStore.Source.UI;
+using QuickStackStore.UI;
+using QuickStackStore.UI.ButtonRenderer;
+using QuickStackStore.UI.FavoriteRenderer;
 using System.Reflection;
 using UnityEngine;
 
@@ -18,20 +20,20 @@ namespace QuickStackStore
         // TODO controller support
         protected void Awake()
         {
-            var path = "QuickStackStore.Resources";
-
-            BorderRenderer.border = Helper.LoadSprite($"{path}.border.png", new Rect(0, 0, 1024, 1024), new Vector2(512, 512));
-            TrashModule.trashSprite = Helper.LoadSprite($"{path}.trash.png", new Rect(0, 0, 64, 64), new Vector2(32, 32));
-            TrashModule.bgSprite = Helper.LoadSprite($"{path}.trashmask.png", new Rect(0, 0, 96, 112), new Vector2(48, 56));
-
             if (CompatibilitySupport.HasAuga())
-            {
-                ButtonRenderer.manager = new AugaButtonRendererManager();
-                BorderRenderer.border = null;
+            {                
+                ButtonRenderer.instance = new AugaButtonRenderer();
+                FavoriteRenderer.instance = new AugaFavoriteRenderer();
             }
             else
             {
-                ButtonRenderer.manager = new DefaultButtonRendererManager();
+                var path = "QuickStackStore.Resources";
+
+                TrashModule.trashSprite = Helper.LoadSprite($"{path}.trash.png", new Rect(0, 0, 64, 64), new Vector2(32, 32));
+                TrashModule.bgSprite = Helper.LoadSprite($"{path}.trashmask.png", new Rect(0, 0, 96, 112), new Vector2(48, 56));
+
+                ButtonRenderer.instance = new DefaultButtonRenderer();
+                FavoriteRenderer.instance = new DefaultFavoriteRenderer(Helper.LoadSprite($"{path}.border.png", new Rect(0, 0, 1024, 1024), new Vector2(512, 512)));
             }
 
             QSSConfig.LoadConfig(this);

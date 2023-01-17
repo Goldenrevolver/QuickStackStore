@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using BepInEx;
 using BepInEx.Configuration;
-using QuickStackStore.Source.UI;
+using QuickStackStore.UI;
+using QuickStackStore.UI.ButtonRenderer;
 
 namespace QuickStackStore
 {
@@ -51,13 +52,13 @@ namespace QuickStackStore
 
         static LocalizationConfig()
         {
-            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.quickStackAreaButton), new Tuple<string, ConfigEntry<string>>(nameof(QuickStackLabel), QuickStackLabel));
-            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.quickStackToContainerButton), new Tuple<string, ConfigEntry<string>>(nameof(QuickStackLabel), QuickStackLabel));
-            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.restockAreaButton), new Tuple<string, ConfigEntry<string>>(nameof(RestockLabel), RestockLabel));
-            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.restockFromContainerButton), new Tuple<string, ConfigEntry<string>>(nameof(RestockLabel), RestockLabel));
-            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.sortContainerButton), new Tuple<string, ConfigEntry<string>>(nameof(SortLabel), SortLabel));
-            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.sortInventoryButton), new Tuple<string, ConfigEntry<string>>(nameof(SortLabel), SortLabel));
-            _ConfigLookup.Add(nameof(ButtonRendererManagerBase.storeAllButton), new Tuple<string, ConfigEntry<string>>(nameof(StoreAllLabel), StoreAllLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.quickStackAreaButton), new Tuple<string, ConfigEntry<string>>(nameof(QuickStackLabel), QuickStackLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.quickStackToContainerButton), new Tuple<string, ConfigEntry<string>>(nameof(QuickStackLabel), QuickStackLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.restockAreaButton), new Tuple<string, ConfigEntry<string>>(nameof(RestockLabel), RestockLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.restockFromContainerButton), new Tuple<string, ConfigEntry<string>>(nameof(RestockLabel), RestockLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.sortContainerButton), new Tuple<string, ConfigEntry<string>>(nameof(SortLabel), SortLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.sortInventoryButton), new Tuple<string, ConfigEntry<string>>(nameof(SortLabel), SortLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.storeAllButton), new Tuple<string, ConfigEntry<string>>(nameof(StoreAllLabel), StoreAllLabel));
         }
 
         internal static string GetRelevantTranslation(string objectName)

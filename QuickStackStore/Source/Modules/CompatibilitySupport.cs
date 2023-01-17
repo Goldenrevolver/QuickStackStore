@@ -124,10 +124,14 @@ namespace QuickStackStore
         public static bool HasAuga()
         {
             if (!HasPlugin(auga))
+            {
                 return false;
+            }
 
             if (Assembly.Load("AugaAPI") is null)
+            {
                 return false;
+            }
 
             return true;
             

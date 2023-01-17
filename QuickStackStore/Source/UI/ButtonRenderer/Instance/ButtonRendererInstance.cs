@@ -4,9 +4,9 @@ using BepInEx.Configuration;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace QuickStackStore.Source.UI
+namespace QuickStackStore.UI.ButtonRenderer
 {
-    internal abstract class ButtonRendererManagerBase
+    internal abstract class ButtonRendererInstance
     {
         internal Button favoritingTogglingButton;
         internal Button quickStackAreaButton;
@@ -22,7 +22,7 @@ namespace QuickStackStore.Source.UI
 
         protected abstract void CreateGuiInternal(InventoryGui __instance);
 
-        public ButtonRendererManagerBase()
+        public ButtonRendererInstance()
         {
 
         }

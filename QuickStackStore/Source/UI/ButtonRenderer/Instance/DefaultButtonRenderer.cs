@@ -1,16 +1,13 @@
-﻿using BepInEx;
-using BepInEx.Configuration;
-using System.Collections;
-using System.Linq;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using static QuickStackStore.CompatibilitySupport;
 using static QuickStackStore.QSSConfig;
 
-namespace QuickStackStore.Source.UI
+namespace QuickStackStore.UI.ButtonRenderer
 {
-    internal class DefaultButtonRendererManager : ButtonRendererManagerBase
+    internal class DefaultButtonRenderer : ButtonRendererInstance
     {
         private float origButtonLength = -1;
         private Vector3 origButtonPosition;

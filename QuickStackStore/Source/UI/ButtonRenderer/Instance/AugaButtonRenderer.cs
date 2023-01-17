@@ -2,9 +2,9 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace QuickStackStore.Source.UI
+namespace QuickStackStore.UI.ButtonRenderer
 {
-    internal class AugaButtonRendererManager : ButtonRendererManagerBase
+    internal class AugaButtonRenderer : ButtonRendererInstance
     {
         private static readonly float _ButtonXIncrement = (_ButtonWidth + _ButtonSpacing) * -1;
 
@@ -16,7 +16,7 @@ namespace QuickStackStore.Source.UI
         private bool foundTakeAll = false;
         private float buttonX = 0;
 
-        public AugaButtonRendererManager()
+        public AugaButtonRenderer()
         {
             Auga.API.IsLoaded();
         }
@@ -26,6 +26,7 @@ namespace QuickStackStore.Source.UI
             buttonX = _StartingButtonX;
 
             if (QSSConfig.CanDisplayInventorySortButton)
+            {
                 CreateOrUpdateButton(
                     sortInventoryButton
                     , nameof(sortInventoryButton)
@@ -33,8 +34,10 @@ namespace QuickStackStore.Source.UI
                     , __instance.m_currentContainer
                     , new UnityAction(() => SortModule.Sort(Player.m_localPlayer.m_inventory, UserConfig.GetPlayerConfig(Player.m_localPlayer.GetPlayerID())))
                     );
+            }
 
             if (QSSConfig.CanDisplayInventoryRestockButton)
+            {
                 CreateOrUpdateButton(
                     restockAreaButton
                     , nameof(restockAreaButton)
@@ -42,8 +45,10 @@ namespace QuickStackStore.Source.UI
                     , __instance.m_currentContainer
                     , new UnityAction(() => QuickStackRestockModule.DoRestock(Player.m_localPlayer))
                     );
+            }
 
             if (QSSConfig.CanDisplayInventoryQuickStackButton)
+            {
                 CreateOrUpdateButton(
                     quickStackAreaButton
                     , nameof(quickStackAreaButton)
@@ -51,12 +56,14 @@ namespace QuickStackStore.Source.UI
                     , __instance.m_currentContainer
                     , new UnityAction(() => QuickStackRestockModule.DoQuickStack(Player.m_localPlayer))
                     );
+            }
 
             if (__instance.m_currentContainer != null)
             {
                 buttonX = _StartingButtonX;
 
                 if (QSSConfig.CanDisplayContainerSortButton)
+                {
                     CreateOrUpdateButton(
                         sortContainerButton
                         , nameof(sortContainerButton)
@@ -64,8 +71,10 @@ namespace QuickStackStore.Source.UI
                         , __instance.m_currentContainer
                         , new UnityAction(() => SortModule.Sort(__instance.m_currentContainer.m_inventory))
                         );
+                }
 
                 if (QSSConfig.CanDisplayContainerRestockButton)
+                {
                     CreateOrUpdateButton(
                         restockFromContainerButton
                         , nameof(restockFromContainerButton)
@@ -73,8 +82,10 @@ namespace QuickStackStore.Source.UI
                         , __instance.m_currentContainer
                         , new UnityAction(() => QuickStackRestockModule.DoRestock(Player.m_localPlayer, true))
                         );
+                }
 
                 if (QSSConfig.CanDisplayStoreAllButton)
+                {
                     CreateOrUpdateButton(
                         storeAllButton
                         , nameof(storeAllButton)
@@ -82,8 +93,10 @@ namespace QuickStackStore.Source.UI
                         , __instance.m_currentContainer
                         , new UnityAction(() => StoreTakeAllModule.StoreAllItemsInOrder(Player.m_localPlayer))
                         );
+                }
 
                 if (QSSConfig.CanDisplayContainerQuickStackButton)
+                {
                     CreateOrUpdateButton(
                         quickStackToContainerButton
                         , nameof(quickStackToContainerButton)
@@ -91,6 +104,7 @@ namespace QuickStackStore.Source.UI
                         , __instance.m_currentContainer
                         , new UnityAction(() => QuickStackRestockModule.DoQuickStack(Player.m_localPlayer, true))
                         );
+                }
 
                 if (QSSConfig.CanMoveTakeAllButton && !foundTakeAll)
                 {

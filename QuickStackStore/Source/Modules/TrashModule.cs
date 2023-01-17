@@ -216,7 +216,9 @@ namespace QuickStackStore
 
                 // bail early since we won't be messing with the rest in auga mode.
                 if (CompatibilitySupport.HasAuga())
+                {
                     return;
+                }
 
                 Transform tText = transform.Find("ac_text");
                 Transform tArmor = transform.Find("armor_icon");

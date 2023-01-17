@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using QuickStackStore.UI.ButtonRenderer;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -106,11 +107,11 @@ namespace QuickStackStore
             {
                 hasCurrentlyToggledFavoriting = value;
 
-                if (ButtonRenderer.manager.favoritingTogglingButtonText != null)
+                if (ButtonRenderer.instance.favoritingTogglingButtonText != null)
                 {
                     var color = ColorUtility.ToHtmlStringRGB(FavoriteConfig.BorderColorFavoritedItem.Value);
 
-                    ButtonRenderer.manager.favoritingTogglingButtonText.text = $"<color=#{color}>{(value ? blackStar : whiteStar)}</color>";
+                    ButtonRenderer.instance.favoritingTogglingButtonText.text = $"<color=#{color}>{(value ? blackStar : whiteStar)}</color>";
                 }
             }
         }
