@@ -1,6 +1,8 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
+using QuickStackStore.UI.Buttons;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -71,6 +73,30 @@ namespace QuickStackStore
         private const string embedded = "embedded";
 
         public const string takeAllKey = "inventory_takeall";
+
+        private static Dictionary<string, Tuple<string, ConfigEntry<string>>> _ConfigLookup = new Dictionary<string, Tuple<string, ConfigEntry<string>>>();
+
+        static LocalizationConfig()
+        {
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.quickStackAreaButton), new Tuple<string, ConfigEntry<string>>(nameof(QuickStackLabel), QuickStackLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.quickStackToContainerButton), new Tuple<string, ConfigEntry<string>>(nameof(QuickStackLabel), QuickStackLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.restockAreaButton), new Tuple<string, ConfigEntry<string>>(nameof(RestockLabel), RestockLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.restockFromContainerButton), new Tuple<string, ConfigEntry<string>>(nameof(RestockLabel), RestockLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.sortContainerButton), new Tuple<string, ConfigEntry<string>>(nameof(SortLabel), SortLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.sortInventoryButton), new Tuple<string, ConfigEntry<string>>(nameof(SortLabel), SortLabel));
+            _ConfigLookup.Add(nameof(ButtonRendererInstance.storeAllButton), new Tuple<string, ConfigEntry<string>>(nameof(StoreAllLabel), StoreAllLabel));
+        }
+
+        internal static string GetRelevantTranslation(string objectName)
+        {
+            if (_ConfigLookup.TryGetValue(objectName, out Tuple<string, ConfigEntry<string>> config))
+            {
+                if (config.Item2 != null)
+                    return config.Item2.Value;
+                return Localization.instance.Translate($"quickstackstore_{config.Item1.ToLower()}");
+            }
+            return Localization.instance.Translate($"quickstackstore_{objectName.ToLower()}");
+        }
 
         internal static string GetRelevantTranslation(ConfigEntry<string> config, string configName)
         {

@@ -1,6 +1,6 @@
 ﻿using HarmonyLib;
 
-namespace QuickStackStore.UI.ButtonRenderer
+namespace QuickStackStore.UI.Buttons
 {
     internal class ButtonRenderer
     {

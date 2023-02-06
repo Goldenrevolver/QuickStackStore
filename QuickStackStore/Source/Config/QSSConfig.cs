@@ -2,7 +2,7 @@
 using BepInEx.Configuration;
 using HarmonyLib;
 using ServerSync;
-using QuickStackStore.UI.ButtonRenderer;
+using QuickStackStore.UI.Buttons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -229,10 +229,10 @@ namespace QuickStackStore
             ControllerDPadUsageModifierKeybind = Config.Bind(sectionName, nameof(ControllerDPadUsageModifierKeybind), new KeyboardShortcut(KeyCode.None), $"When {nameof(ControllerDPadUsageInInventoryGrid)} is set to {DPadUsage.KeybindsWhileHoldingModifierKey}, then holding this prevents slot movement in the inventory grid with the DPad.");
 
             RemoveControllerButtonHintFromTakeAllButton = Config.Bind(sectionName, nameof(RemoveControllerButtonHintFromTakeAllButton), false, $"Remove the button hint from the 'Take All' button while using a controller for consistency. Especially useful when using the new keybind {nameof(TakeAllKeybind)}.");
-            RemoveControllerButtonHintFromTakeAllButton.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+            RemoveControllerButtonHintFromTakeAllButton.SettingChanged += (a, b) => ButtonRenderer.instance.OnButtonRelevantSettingChanged(plugin);
 
             UseHardcodedControllerSupport = Config.Bind(sectionName, nameof(UseHardcodedControllerSupport), true, "Whether to enable the hardcoded controller bindings including UI hints while a controller is used. This disables custom hotkeys.");
-            UseHardcodedControllerSupport.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+            UseHardcodedControllerSupport.SettingChanged += (a, b) => ButtonRenderer.instance.OnButtonRelevantSettingChanged(plugin);
 
             sectionName = "1 - Favoriting";
 
@@ -251,7 +251,7 @@ namespace QuickStackStore
             BorderColorTrashFlaggedItemOnFavoritedSlot = Config.Bind(sectionName, nameof(BorderColorTrashFlaggedItemOnFavoritedSlot), Color.black, "Color of the border of a favorited slot that also contains a trash flagged item.");
 
             DisplayFavoriteToggleButton = Config.Bind(sectionName, nameof(DisplayFavoriteToggleButton), FavoritingToggling.EnabledTopButton, $"Whether to display a button to toggle favoriting mode on or off, allowing to favorite without holding any hotkey ({overrideButton}). This can also be used to trash flag. The hotkeys work independently.");
-            DisplayFavoriteToggleButton.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+            DisplayFavoriteToggleButton.SettingChanged += (a, b) => ButtonRenderer.instance.OnButtonRelevantSettingChanged(plugin);
 
             if (TryGetOldConfigValue(new ConfigDefinition(sectionName, "FavoritingModifierToggles"), ref oldValue))
             {
@@ -275,7 +275,7 @@ namespace QuickStackStore
             AreaStackRestockServerSync = new ConfigSync(QuickStackStorePlugin.GUID) { DisplayName = QuickStackStorePlugin.NAME, CurrentVersion = QuickStackStorePlugin.VERSION, MinimumRequiredVersion = QuickStackStorePlugin.VERSION, ModRequired = false };
 
             AllowAreaStackingInMultiplayerWithoutMUC = Config.BindSynced(AreaStackRestockServerSync, sectionName, nameof(AllowAreaStackingInMultiplayerWithoutMUC), false, CustomCategoryWithDescription(areaStackSectionDisplayName, "Whether you can use area quick stacking and area restocking in multiplayer while 'Multi User Chest' is not installed. While this is almost always safe, it can fail because no actual network requests are getting sent. Ship containers are inherently especially vulnerable and are therefore excluded."));
-            AllowAreaStackingInMultiplayerWithoutMUC.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+            AllowAreaStackingInMultiplayerWithoutMUC.SettingChanged += (a, b) => ButtonRenderer.instance.OnButtonRelevantSettingChanged(plugin);
 
             SuppressContainerSoundAndVisuals = Config.BindSynced(AreaStackRestockServerSync, sectionName, nameof(SuppressContainerSoundAndVisuals), true, CustomCategoryWithDescription(areaStackSectionDisplayName, "Whether when a feature checks multiple containers in an area, they actually play opening sounds and visuals. Disable if the suppression causes incompatibilities."));
 
@@ -293,7 +293,7 @@ namespace QuickStackStore
             KeyCodeBackwardsCompatibility(QuickStackKeybind, sectionName, "QuickStackKey");
 
             QuickStackToNearbyRange = Config.BindSynced(AreaStackRestockServerSync, sectionName, nameof(QuickStackToNearbyRange), 10f, CustomCategoryWithDescription(areaStackSectionDisplayName, range));
-            QuickStackToNearbyRange.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+            QuickStackToNearbyRange.SettingChanged += (a, b) => ButtonRenderer.instance.OnButtonRelevantSettingChanged(plugin);
 
             QuickStackTrophiesIntoSameContainer = Config.Bind(sectionName, nameof(QuickStackTrophiesIntoSameContainer), false, "Whether to put all types of trophies in the container if any trophy is found in that container.");
 
@@ -305,7 +305,7 @@ namespace QuickStackStore
             DisplayRestockButtons.SettingChanged += (a, b) => ButtonRenderer.instance.OnButtonRelevantSettingChanged(plugin);
 
             RestockFromNearbyRange = Config.BindSynced(AreaStackRestockServerSync, sectionName, nameof(RestockFromNearbyRange), 10f, CustomCategoryWithDescription(areaStackSectionDisplayName, range));
-            RestockFromNearbyRange.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+            RestockFromNearbyRange.SettingChanged += (a, b) => ButtonRenderer.instance.OnButtonRelevantSettingChanged(plugin);
 
             RestockHotkeyBehaviorWhenContainerOpen = Config.Bind(sectionName, nameof(RestockHotkeyBehaviorWhenContainerOpen), RestockBehavior.RestockOnlyFromCurrentContainer, hotkey);
             RestockIncludesHotkeyBar = Config.Bind(sectionName, nameof(RestockIncludesHotkeyBar), true, $"Whether to also try to restock items currently in the hotkey bar ({overrideHotkeyBar}).");

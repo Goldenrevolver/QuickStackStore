@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace QuickStackStore.UI.FavoriteRenderer
+namespace QuickStackStore.UI.Favoriting
 {
     [HarmonyPatch(typeof(InventoryGrid))]
     internal static class FavoriteRenderer
@@ -59,7 +59,7 @@ namespace QuickStackStore.UI.FavoriteRenderer
                 return true;
             }
 
-            if (!Helper.IsInFavoritingMode())
+            if (!FavoritingMode.IsInFavoritingMode())
             {
                 return true;
             }

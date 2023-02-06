@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static QuickStackStore.QSSConfig;
 
-namespace QuickStackStore.UI.FavoriteRenderer
+namespace QuickStackStore.UI.Favoriting
 {
     internal abstract class FavoriteRendererInstance
     {

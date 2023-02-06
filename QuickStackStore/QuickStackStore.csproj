@@ -84,6 +84,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuickStackStorePlugin.cs" />
+    <Compile Include="Source\Config\QSSConfig.cs" />
     <Compile Include="Source\ExtensionMethods.cs" />
     <Compile Include="Source\Config\ConfigurationManagerAttributes.cs" />
     <Compile Include="Source\Config\ServerSyncWrapper.cs" />
@@ -98,22 +99,21 @@
     <Compile Include="Source\Modules\RestockModule.cs" />
     <Compile Include="Source\Modules\StoreTakeAllModule.cs" />
     <Compile Include="Source\Modules\SortModule.cs" />
-    <Compile Include="Source\QSSConfig.cs" />
-    <Compile Include="Source\UI\FavoriteRenderer\Instance\AugaFavoriteRenderer.cs" />
-    <Compile Include="Source\UI\FavoriteRenderer\Instance\FavoriteRendererInstance.cs" />
-    <Compile Include="Source\UI\FavoriteRenderer\Instance\DefaultFavoriteRenderer.cs" />
-    <Compile Include="Source\UI\ButtonRenderer\Instance\AugaButtonRenderer.cs" />
-    <Compile Include="Source\UI\ButtonRenderer\ButtonRenderer.cs" />
-    <Compile Include="Source\UI\FavoriteRenderer\FavoriteRenderer.cs" />
-    <Compile Include="Source\UI\ButtonRenderer\Instance\ButtonRendererInstance.cs" />
-    <Compile Include="Source\UI\ButtonRenderer\Instance\DefaultButtonRenderer.cs" />
+    <Compile Include="Source\UI\Favoriting\Instance\AugaFavoriteRenderer.cs" />
+    <Compile Include="Source\UI\Favoriting\Instance\FavoriteRendererInstance.cs" />
+    <Compile Include="Source\UI\Favoriting\Instance\DefaultFavoriteRenderer.cs" />
+    <Compile Include="Source\UI\Buttons\Instance\AugaButtonRenderer.cs" />
+    <Compile Include="Source\UI\Buttons\ButtonRenderer.cs" />
+    <Compile Include="Source\UI\Favoriting\FavoriteRenderer.cs" />
+    <Compile Include="Source\UI\Buttons\Instance\ButtonRendererInstance.cs" />
+    <Compile Include="Source\UI\Buttons\Instance\DefaultButtonRenderer.cs" />
     <Compile Include="Source\UI\ControllerButtonHintHelper.cs" />
     <Compile Include="Source\UI\InventoryGridButtonHandlingPatches.cs" />
     <Compile Include="Source\UI\PatchInventory.cs" />
     <Compile Include="Source\UI\TooltipRenderer.cs" />
     <Compile Include="Source\Modules\TrashModule.cs" />
     <Compile Include="Source\Config\UserConfig.cs" />
-    <Compile Include="Source\UI\ButtonUIPatches.cs" />
+    <Compile Include="Source\UI\Buttons\ButtonUIPatches.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="GameDir.targets" />

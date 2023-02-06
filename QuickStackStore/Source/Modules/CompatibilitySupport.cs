@@ -24,6 +24,8 @@ namespace QuickStackStore
         public const string betterArchery = "ishid4.mods.betterarchery";
         public const string smartContainers = "flueno.SmartContainers";
         public const string backpacks = "org.bepinex.plugins.backpacks";
+        public const string multiUserChest = "com.maxsch.valheim.MultiUserChest";
+        public const string jewelCrafting = "org.bepinex.plugins.jewelcrafting";
         public const string auga = "randyknapp.mods.auga";
 
         public static System.Version mucUpdateVersion = new System.Version(0, 4, 0);

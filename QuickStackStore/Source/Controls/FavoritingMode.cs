@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using QuickStackStore.UI.Buttons;
+using UnityEngine;
 using static QuickStackStore.QSSConfig;
 
 namespace QuickStackStore
@@ -17,7 +18,7 @@ namespace QuickStackStore
             {
                 hasCurrentlyToggledFavoriting = value;
 
-                if (!ButtonRenderer.favoritingTogglingButtonText)
+                if (!ButtonRenderer.instance.favoritingTogglingButtonText)
                 {
                     return;
                 }
@@ -26,11 +27,11 @@ namespace QuickStackStore
                 {
                     var color = ColorUtility.ToHtmlStringRGB(FavoriteConfig.BorderColorFavoritedItem.Value);
 
-                    ButtonRenderer.favoritingTogglingButtonText.text = $"<color=#{color}>{(value ? blackStar : whiteStar)}</color>";
+                    ButtonRenderer.instance.favoritingTogglingButtonText.text = $"<color=#{color}>{(value ? blackStar : whiteStar)}</color>";
                 }
                 else
                 {
-                    ButtonRenderer.favoritingTogglingButtonText.text = value ? blackStar : whiteStar;
+                    ButtonRenderer.instance.favoritingTogglingButtonText.text = value ? blackStar : whiteStar;
                 }
             }
         }

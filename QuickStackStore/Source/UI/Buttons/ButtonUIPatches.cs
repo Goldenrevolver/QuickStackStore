@@ -1,8 +1,8 @@
 ﻿using HarmonyLib;
 using UnityEngine.UI;
-using static QuickStackStore.ButtonRenderer;
+using static QuickStackStore.UI.Buttons.ButtonRenderer;
 
-namespace QuickStackStore
+namespace QuickStackStore.Buttons
 {
     internal class ButtonUIPatches
     {
@@ -15,9 +15,9 @@ namespace QuickStackStore
             [HarmonyPatch(nameof(InventoryGui.Show)), HarmonyPostfix]
             private static void Show_Postfix(InventoryGui __instance)
             {
-                hasOpenedInventoryOnce = true;
+                instance.hasOpenedInventoryOnce = true;
 
-                MainButtonUpdate.UpdateInventoryGuiButtons(__instance);
+                instance.CreateGui(__instance);
             }
 
             [HarmonyPriority(Priority.LowerThanNormal)]
@@ -37,7 +37,7 @@ namespace QuickStackStore
                     return;
                 }
 
-                var buttons = new Button[] { storeAllButton, quickStackToContainerButton, sortContainerButton, restockFromContainerButton };
+                var buttons = new Button[] { instance.storeAllButton, instance.quickStackToContainerButton, instance.sortContainerButton, instance.restockFromContainerButton };
 
                 foreach (var button in buttons)
                 {
@@ -59,11 +59,11 @@ namespace QuickStackStore
             [HarmonyPatch(nameof(Game.Logout)), HarmonyPrefix]
             internal static void ResetOnLogout()
             {
-                hasOpenedInventoryOnce = false;
+                instance.hasOpenedInventoryOnce = false;
                 TrashModule.TrashItemsPatches.hasOpenedInventoryOnce = false;
 
-                origButtonLength = -1;
-                origButtonPosition = default;
+                instance.origButtonLength = -1;
+                instance.origButtonPosition = default;
             }
         }
     }

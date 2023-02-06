@@ -4,21 +4,33 @@ using BepInEx.Configuration;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace QuickStackStore.UI.ButtonRenderer
+namespace QuickStackStore.UI.Buttons
 {
     internal abstract class ButtonRendererInstance
     {
+        internal bool hasOpenedInventoryOnce = false;
+        internal float origButtonLength = -1;
+        internal Vector3 origButtonPosition;
+
+
+        internal Text favoritingTogglingButtonText;
+
+
         internal Button favoritingTogglingButton;
         internal Button quickStackAreaButton;
         internal Button sortInventoryButton;
         internal Button restockAreaButton;
         
+
         internal Button quickStackToContainerButton;
         internal Button storeAllButton;
         internal Button sortContainerButton;
         internal Button restockFromContainerButton;
 
-        internal Text favoritingTogglingButtonText;
+
+        private const float shrinkFactor = 0.9f;
+        private const int vPadding = 8;
+        private const int hAlign = 1;
 
         protected abstract void CreateGuiInternal(InventoryGui __instance);
 
@@ -32,20 +44,20 @@ namespace QuickStackStore.UI.ButtonRenderer
             if (Player.m_localPlayer)
             {
                 // reset in case player forgot to turn it off
-                Helper.HasCurrentlyToggledFavoriting = false;
+                FavoritingMode.HasCurrentlyToggledFavoriting = false;
 
                 if (QSSConfig.ShouldAutoSortInventory)
-                    SortModule.Sort(Player.m_localPlayer.m_inventory, UserConfig.GetPlayerConfig(Player.m_localPlayer.GetPlayerID()));
+                    SortModule.DoSort(Player.m_localPlayer);
                 
                 if (QSSConfig.ShouldAutoSortContainer)
-                    SortModule.Sort(__instance.m_currentContainer.m_inventory);
+                    SortModule.DoSort(Player.m_localPlayer);
             }
 
             CreateGuiInternal(__instance);
 
         }
 
-        internal virtual void OnButtonRelevantSettingChanged(QuickStackStorePlugin plugin, bool includeTrashButton = false)
+        internal virtual void OnButtonRelevantSettingChanged(BaseUnityPlugin plugin, bool includeTrashButton = false)
         {
             // reminder to never use ?. on monobehaviors
             var buttons = new Button[] { storeAllButton, quickStackToContainerButton, sortContainerButton, restockFromContainerButton, sortInventoryButton, quickStackAreaButton, restockAreaButton, favoritingTogglingButton };

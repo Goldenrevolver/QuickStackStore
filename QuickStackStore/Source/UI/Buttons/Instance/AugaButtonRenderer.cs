@@ -2,7 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace QuickStackStore.UI.ButtonRenderer
+namespace QuickStackStore.UI.Buttons
 {
     internal class AugaButtonRenderer : ButtonRendererInstance
     {
@@ -32,7 +32,7 @@ namespace QuickStackStore.UI.ButtonRenderer
                     , nameof(sortInventoryButton)
                     , __instance.m_player
                     , __instance.m_currentContainer
-                    , new UnityAction(() => SortModule.Sort(Player.m_localPlayer.m_inventory, UserConfig.GetPlayerConfig(Player.m_localPlayer.GetPlayerID())))
+                    , new UnityAction(() => SortModule.DoSort(Player.m_localPlayer))
                     );
             }
 
@@ -43,7 +43,7 @@ namespace QuickStackStore.UI.ButtonRenderer
                     , nameof(restockAreaButton)
                     , __instance.m_player
                     , __instance.m_currentContainer
-                    , new UnityAction(() => QuickStackRestockModule.DoRestock(Player.m_localPlayer))
+                    , new UnityAction(() => RestockModule.DoRestock(Player.m_localPlayer))
                     );
             }
 
@@ -54,7 +54,7 @@ namespace QuickStackStore.UI.ButtonRenderer
                     , nameof(quickStackAreaButton)
                     , __instance.m_player
                     , __instance.m_currentContainer
-                    , new UnityAction(() => QuickStackRestockModule.DoQuickStack(Player.m_localPlayer))
+                    , new UnityAction(() => QuickStackModule.DoQuickStack(Player.m_localPlayer))
                     );
             }
 
@@ -69,7 +69,7 @@ namespace QuickStackStore.UI.ButtonRenderer
                         , nameof(sortContainerButton)
                         , __instance.m_container
                         , __instance.m_currentContainer
-                        , new UnityAction(() => SortModule.Sort(__instance.m_currentContainer.m_inventory))
+                        , new UnityAction(() => SortModule.DoSort(Player.m_localPlayer))
                         );
                 }
 
@@ -80,7 +80,7 @@ namespace QuickStackStore.UI.ButtonRenderer
                         , nameof(restockFromContainerButton)
                         , __instance.m_container
                         , __instance.m_currentContainer
-                        , new UnityAction(() => QuickStackRestockModule.DoRestock(Player.m_localPlayer, true))
+                        , new UnityAction(() => RestockModule.DoRestock(Player.m_localPlayer, true))
                         );
                 }
 
@@ -102,7 +102,7 @@ namespace QuickStackStore.UI.ButtonRenderer
                         , nameof(quickStackToContainerButton)
                         , __instance.m_container
                         , __instance.m_currentContainer
-                        , new UnityAction(() => QuickStackRestockModule.DoQuickStack(Player.m_localPlayer, true))
+                        , new UnityAction(() => QuickStackModule.DoQuickStack(Player.m_localPlayer, true))
                         );
                 }
 

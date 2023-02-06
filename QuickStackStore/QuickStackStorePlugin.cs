@@ -1,15 +1,14 @@
 ﻿using BepInEx;
 using HarmonyLib;
-using QuickStackStore.UI;
-using QuickStackStore.UI.ButtonRenderer;
-using QuickStackStore.UI.FavoriteRenderer;
+using QuickStackStore.UI.Buttons;
+using QuickStackStore.UI.Favoriting;
 using System.Reflection;
 using UnityEngine;
 
 namespace QuickStackStore
 {
     [BepInIncompatibility("virtuacode.valheim.trashitems")]
-    [BepInDependency(CompatibilitySupport."randyknappAuga", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency(CompatibilitySupport.auga, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(CompatibilitySupport.multiUserChest, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(GUID, NAME, VERSION)]
     public class QuickStackStorePlugin : BaseUnityPlugin
@@ -27,7 +26,7 @@ namespace QuickStackStore
             }
 
             if (CompatibilitySupport.HasAuga())
-            {                
+            {
                 ButtonRenderer.instance = new AugaButtonRenderer();
                 FavoriteRenderer.instance = new AugaFavoriteRenderer();
             }
@@ -35,12 +34,12 @@ namespace QuickStackStore
             {
                 var path = "QuickStackStore.Resources";
 
-            ControllerButtonHintHelper.circleButtonSprite = Helper.LoadSprite($"{path}.circleButton.png", new Rect(0, 0, 36, 36));
-            ControllerButtonHintHelper.rectButtonSprite = Helper.LoadSprite($"{path}.rectangleButton.png", new Rect(0, 0, 28, 28));
+                ControllerButtonHintHelper.circleButtonSprite = Helper.LoadSprite($"{path}.circleButton.png", new Rect(0, 0, 36, 36));
+                ControllerButtonHintHelper.rectButtonSprite = Helper.LoadSprite($"{path}.rectangleButton.png", new Rect(0, 0, 28, 28));
 
-            BorderRenderer.border = Helper.LoadSprite($"{path}.border.png", new Rect(0, 0, 1024, 1024));
-            TrashModule.trashSprite = Helper.LoadSprite($"{path}.trash.png", new Rect(0, 0, 64, 64));
-            TrashModule.bgSprite = Helper.LoadSprite($"{path}.trashmask.png", new Rect(0, 0, 96, 112));
+                FavoriteRenderer.instance.indicator = Helper.LoadSprite($"{path}.border.png", new Rect(0, 0, 1024, 1024));
+                TrashModule.trashSprite = Helper.LoadSprite($"{path}.trash.png", new Rect(0, 0, 64, 64));
+                TrashModule.bgSprite = Helper.LoadSprite($"{path}.trashmask.png", new Rect(0, 0, 96, 112));
 
                 ButtonRenderer.instance = new DefaultButtonRenderer();
                 FavoriteRenderer.instance = new DefaultFavoriteRenderer(Helper.LoadSprite($"{path}.border.png", new Rect(0, 0, 1024, 1024), new Vector2(512, 512)));

@@ -94,7 +94,7 @@ namespace QuickStackStore
             [HarmonyPriority(Priority.LowerThanNormal)]
             [HarmonyPatch(nameof(InventoryGui.Show))]
             [HarmonyPostfix]
-            private static void Show_Postfix(InventoryGui __instance)
+            public static void Show_Postfix(InventoryGui __instance)
             {
                 hasOpenedInventoryOnce = true;
 

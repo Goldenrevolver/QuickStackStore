@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace QuickStackStore.UI.FavoriteRenderer
+namespace QuickStackStore.UI.Favoriting
 {
     internal class AugaFavoriteRenderer: FavoriteRendererInstance
     {
