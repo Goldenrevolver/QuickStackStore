@@ -1,6 +1,5 @@
-﻿using BepInEx;
+﻿using BepInEx.Bootstrap;
 using BepInEx.Configuration;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using static QuickStackStore.QSSConfig;
@@ -17,8 +16,6 @@ namespace QuickStackStore
         private static FieldInfo OdinQOLAddEquipmentRow;
         private static FieldInfo RandyQuickSlotsEnabled;
 
-        public static Dictionary<string, bool> cache = null;
-
         public const string aeden = "aedenthorn.ExtendedPlayerInventory";
         public const string comfy = "com.bruce.valheim.comfyquickslots";
         public const string odinPlus = "com.odinplusqol.mod";
@@ -29,50 +26,30 @@ namespace QuickStackStore
         public const string backpacks = "org.bepinex.plugins.backpacks";
         public const string auga = "randyknapp.mods.auga";
 
-        public static string[] supportedPlugins = new string[]
+        public static System.Version mucUpdateVersion = new System.Version(0, 4, 0);
+
+        public static bool AllowAreaStackingRestocking()
         {
-            aeden,
-            comfy,
-            odinPlus,
-            odinExInv,
-            randy,
-            betterArchery,
-            auga,
-        };
+            return AreaStackRestockHelper.IsTrueSingleplayer() || HasPlugin(multiUserChest) || QuickStackRestockConfig.AllowAreaStackingInMultiplayerWithoutMUC.Value;
+        }
 
-        public static void RegenerateCache()
+        public static bool HasOutdatedMUCPlugin()
         {
-            cache = new Dictionary<string, bool>();
-
-            var plugins = UnityEngine.Object.FindObjectsOfType<BaseUnityPlugin>();
-
-            foreach (var guid in supportedPlugins)
+            if (Chainloader.PluginInfos.ContainsKey(multiUserChest))
             {
-                var found = plugins.Any(plugin => plugin.Info.Metadata.GUID == guid);
+                var info = Chainloader.PluginInfos[multiUserChest];
 
-                if (found)
-                {
-                    Helper.Log($"Found supported plugin {guid}. Enabling compatibility for it.");
-                }
-
-                cache[guid] = found;
+                return info.Metadata.Version < mucUpdateVersion;
+            }
+            else
+            {
+                return false;
             }
         }
 
         public static bool HasPlugin(string guid)
         {
-            if (cache == null)
-            {
-                RegenerateCache();
-            }
-
-            if (!cache.ContainsKey(guid))
-            {
-                var plugins = UnityEngine.Object.FindObjectsOfType<BaseUnityPlugin>();
-                cache[guid] = plugins.Any(plugin => plugin.Info.Metadata.GUID == guid);
-            }
-
-            return cache[guid];
+            return Chainloader.PluginInfos.ContainsKey(guid);
         }
 
         public enum RandyStatus
@@ -113,7 +90,7 @@ namespace QuickStackStore
 
         public static bool ShouldBlockChangesToTakeAllButton()
         {
-            return StoreTakeAllConfig.NeverMoveTakeAllButton.Value || HasPlugin(smartContainers) || HasPlugin(backpacks);
+            return StoreTakeAllConfig.NeverMoveTakeAllButton.Value || HasPlugin(smartContainers) || HasPlugin(backpacks) || HasPlugin(jewelCrafting);
         }
 
         public static bool HasPluginThatRequiresMiniButtonVMove()

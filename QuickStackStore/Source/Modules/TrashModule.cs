@@ -87,13 +87,27 @@ namespace QuickStackStore
         [HarmonyPatch(typeof(InventoryGui))]
         internal static class TrashItemsPatches
         {
+            internal static bool hasOpenedInventoryOnce = false;
+
             // slightly lower priority so we get rendered on top of equipment slot mods
             // (lower priority -> later rendering -> you get rendered on top)
             [HarmonyPriority(Priority.LowerThanNormal)]
             [HarmonyPatch(nameof(InventoryGui.Show))]
             [HarmonyPostfix]
-            public static void Show_Postfix(InventoryGui __instance)
+            private static void Show_Postfix(InventoryGui __instance)
             {
+                hasOpenedInventoryOnce = true;
+
+                UpdateTrashCanUI(__instance);
+            }
+
+            internal static void UpdateTrashCanUI(InventoryGui __instance)
+            {
+                if (!hasOpenedInventoryOnce)
+                {
+                    return;
+                }
+
                 if (__instance != InventoryGui.instance)
                 {
                     return;
@@ -243,6 +257,9 @@ namespace QuickStackStore
                 tText.GetComponent<Text>().text = LocalizationConfig.GetRelevantTranslation(LocalizationConfig.TrashLabel, nameof(LocalizationConfig.TrashLabel));
                 tText.GetComponent<Text>().color = TrashConfig.TrashLabelColor.Value;
 
+                // this fixes that the left most letter wants to go below the inventory wood panel if the label text is too long
+                tText.GetComponent<RectTransform>().sizeDelta -= new Vector2(9, 0);
+
                 // Replace armor with trash icon
                 tArmor.GetComponent<Image>().sprite = trashSprite;
 
@@ -262,6 +279,8 @@ namespace QuickStackStore
                 Button button = buttonGo.AddComponent<Button>();
                 button.onClick.AddListener(() => TrashOrTrashFlagItem());
 
+                ControllerButtonHintHelper.AddControllerTooltipToTrashCan(button, tArmor);
+
                 // Add invisible image so we become clickable
                 var image = buttonGo.AddComponent<Image>();
                 image.color = new Color(0, 0, 0, 0);
@@ -274,13 +293,7 @@ namespace QuickStackStore
                 newFrame.GetComponent<RectTransform>().sizeDelta = new Vector2(-8, 22);
                 newFrame.GetComponent<RectTransform>().anchoredPosition = new Vector2(6, 7.5f);
 
-                // Add inventory screen tab
-                UIGroupHandler handler = gameObject.AddComponent<UIGroupHandler>();
-                handler.m_groupPriority = 1;
-                handler.m_enableWhenActiveAndGamepad = newFrame;
-                InventoryGui.instance.m_uiGroups = InventoryGui.instance.m_uiGroups.AddToArray(handler);
-
-                gameObject.AddComponent<TrashHandler>();
+                gameObject.AddComponent<TrashFrameHandler>().frame = newFrame;
             }
 
             protected void Start()
@@ -375,7 +388,7 @@ namespace QuickStackStore
 
             if (InventoryGui.instance.m_dragGo != null)
             {
-                if (Helper.IsInFavoritingMode())
+                if (FavoritingMode.IsInFavoritingMode())
                 {
                     clickState = ClickState.ClickedTrashFlagging;
                 }
@@ -386,7 +399,7 @@ namespace QuickStackStore
             }
             else
             {
-                if (!usedFromHotkey && TrashConfig.EnableQuickTrash.Value && !Helper.IsInFavoritingMode())
+                if (!usedFromHotkey && TrashConfig.EnableQuickTrash.Value && !FavoritingMode.IsInFavoritingMode())
                 {
                     clickState = ClickState.ClickedQuickTrash;
                 }
@@ -402,7 +415,7 @@ namespace QuickStackStore
                 return;
             }
 
-            if (TrashConfig.EnableQuickTrash.Value && !Helper.IsInFavoritingMode())
+            if (TrashConfig.EnableQuickTrash.Value && !FavoritingMode.IsInFavoritingMode())
             {
                 clickState = ClickState.ClickedQuickTrash;
             }
@@ -417,23 +430,13 @@ namespace QuickStackStore
         }
     }
 
-    public class TrashHandler : MonoBehaviour
+    public class TrashFrameHandler : MonoBehaviour
     {
-        private UIGroupHandler handler;
-
-        protected void Awake()
-        {
-            handler = this.GetComponent<UIGroupHandler>();
-        }
+        internal GameObject frame;
 
         protected void Update()
         {
-            if (ZInput.GetButtonDown("JoyButtonA") && handler.IsActive())
-            {
-                TrashModule.TrashOrTrashFlagItem();
-                // Switch back to inventory tab
-                InventoryGui.instance.SetActiveGroup(1);
-            }
+            frame.SetActive(ZInput.IsGamepadActive() && InventoryGui.instance.m_activeGroup == 1);
         }
     }
 }

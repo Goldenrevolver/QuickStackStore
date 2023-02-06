@@ -1,12 +1,64 @@
-﻿using System.Collections.Generic;
+﻿using HarmonyLib;
+using System.Collections.Generic;
 using System.Linq;
 using static ItemDrop;
 using static QuickStackStore.QSSConfig;
 
 namespace QuickStackStore
 {
+    [HarmonyPatch(typeof(InventoryGui))]
+    internal class TakeAllPatch
+    {
+        [HarmonyPatch(nameof(InventoryGui.OnTakeAll)), HarmonyPrefix]
+        internal static bool ContextSensitiveTakeAll(InventoryGui __instance)
+        {
+            if (!StoreTakeAllConfig.ChestsUseImprovedTakeAllLogic.Value)
+            {
+                return true;
+            }
+
+            if (!__instance.m_currentContainer || __instance.m_currentContainer.GetComponent<TombStone>())
+            {
+                return true;
+            }
+
+            StoreTakeAllModule.TakeAllItemsInOrder(Player.m_localPlayer);
+            return false;
+        }
+    }
+
     internal class StoreTakeAllModule
     {
+        internal static void DoTakeAllWithKeybind(Player player)
+        {
+            if (!InventoryGui.instance || !InventoryGui.IsVisible())
+            {
+                return;
+            }
+
+            if (player != Player.m_localPlayer)
+            {
+                return;
+            }
+
+            InventoryGui.instance.OnTakeAll();
+        }
+
+        internal static void DoStoreAllWithKeybind(Player player)
+        {
+            if (!InventoryGui.instance || !InventoryGui.IsVisible())
+            {
+                return;
+            }
+
+            if (player != Player.m_localPlayer)
+            {
+                return;
+            }
+
+            StoreAllItemsInOrder(player);
+        }
+
         private static bool ShouldStoreItem(ItemData item, UserConfig playerConfig, int inventoryHeight, bool includeHotbar)
         {
             return (item.m_gridPos.y > 0 || includeHotbar)
@@ -15,23 +67,13 @@ namespace QuickStackStore
                 && !CompatibilitySupport.IsEquipOrQuickSlot(inventoryHeight, item.m_gridPos);
         }
 
-        public static void ContextSensitiveTakeAll(InventoryGui instance)
+        internal static void TakeAllItemsInOrder(Player player)
         {
-            if (instance.m_currentContainer)
+            if (!InventoryGui.instance.m_currentContainer)
             {
-                if (!StoreTakeAllConfig.ChestsUseImprovedTakeAllLogic.Value || instance.m_currentContainer.GetComponent<TombStone>())
-                {
-                    instance.OnTakeAll();
-                }
-                else
-                {
-                    TakeAllItemsInOrder(Player.m_localPlayer);
-                }
+                return;
             }
-        }
 
-        private static void TakeAllItemsInOrder(Player player)
-        {
             Inventory fromInventory = InventoryGui.instance.m_currentContainer.m_inventory;
             Inventory toInventory = player.m_inventory;
 
@@ -40,6 +82,11 @@ namespace QuickStackStore
 
         internal static void StoreAllItemsInOrder(Player player)
         {
+            if (!InventoryGui.instance.m_currentContainer)
+            {
+                return;
+            }
+
             Inventory fromInventory = player.m_inventory;
             Inventory toInventory = InventoryGui.instance.m_currentContainer.m_inventory;
 
@@ -48,7 +95,7 @@ namespace QuickStackStore
 
         internal static void MoveAllItemsInOrder(Player player, Inventory fromInventory, Inventory toInventory, bool takeAllOverride = false)
         {
-            if (player.IsTeleporting() || !InventoryGui.instance.m_container)
+            if (player.IsTeleporting())
             {
                 return;
             }

@@ -1,0 +1,37 @@
+{
+  "RestockLabelCharacter": "R",
+  "QuickStackLabelCharacter": "Q",
+  "SortLabelCharacter": "S",
+
+  "QuickStackResultMessageNothing": "Nada para ser empilhado",
+  "QuickStackResultMessageNone": "0 itens empilhados",
+  "QuickStackResultMessageOne": "1 item empilhado",
+  "QuickStackResultMessageMore": "Empilhado {0} itens",
+
+  "RestockResultMessageNothing": "Nada para reabastecer",
+  "RestockResultMessageNone": "Não foi possível reabastecer (0/{0})",
+  "RestockResultMessagePartial": "Parcialmente reabastecido ({0}/{1})",
+  "RestockResultMessageFull": "Totalmente reabastecido (total: {0})",
+
+  "QuickStackLabel": "Empilhamento rápido",
+  "StoreAllLabel": "Armazenar tudo",
+  "SortLabel": "Organizar",
+  "RestockLabel": "Reabastecer",
+  "TrashLabel": "Lixeira",
+
+  "SortByInternalNameLabel": "nome i.",
+  "SortByTranslatedNameLabel": "nome t.",
+  "SortByValueLabel": "valor",
+  "SortByWeightLabel": "peso",
+  "SortByTypeLabel": "tipo",
+
+  "TrashConfirmationOkayButton": "Descartar",
+  "QuickTrashConfirmation": "Descartar?",
+  "CantTrashFavoritedItemWarning": "Não é possível descartar um item favoritado!",
+  "CantTrashFlagFavoritedItemWarning": "Não é possível sinalizar para a lixeira um item favoritado!",
+  "CantTrashHotkeyBarItemWarning": "As configurações não permitem o descarte de itens na barra de teclas de atalho!",
+  "CantFavoriteTrashFlaggedItemWarning": "Não é possível favoritar um item sinalizado como lixo!",
+
+  "FavoritedItemTooltip": "Não será rapidamente empilhado, classificado, armazenado ou descartado",
+  "TrashFlaggedItemTooltip": "Pode ser descartado rapidamente"
+}
