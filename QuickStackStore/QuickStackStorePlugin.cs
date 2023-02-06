@@ -37,12 +37,11 @@ namespace QuickStackStore
                 ControllerButtonHintHelper.circleButtonSprite = Helper.LoadSprite($"{path}.circleButton.png", new Rect(0, 0, 36, 36));
                 ControllerButtonHintHelper.rectButtonSprite = Helper.LoadSprite($"{path}.rectangleButton.png", new Rect(0, 0, 28, 28));
 
-                FavoriteRenderer.instance.indicator = Helper.LoadSprite($"{path}.border.png", new Rect(0, 0, 1024, 1024));
                 TrashModule.trashSprite = Helper.LoadSprite($"{path}.trash.png", new Rect(0, 0, 64, 64));
                 TrashModule.bgSprite = Helper.LoadSprite($"{path}.trashmask.png", new Rect(0, 0, 96, 112));
 
                 ButtonRenderer.instance = new DefaultButtonRenderer();
-                FavoriteRenderer.instance = new DefaultFavoriteRenderer(Helper.LoadSprite($"{path}.border.png", new Rect(0, 0, 1024, 1024), new Vector2(512, 512)));
+                FavoriteRenderer.instance = new DefaultFavoriteRenderer(Helper.LoadSprite($"{path}.border.png", new Rect(0, 0, 1024, 1024)));
             }
 
             QSSConfig.LoadConfig(this);
