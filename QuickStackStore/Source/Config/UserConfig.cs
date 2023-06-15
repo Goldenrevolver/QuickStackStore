@@ -196,7 +196,7 @@ namespace QuickStackStore
                 return false;
             }
 
-            return item.m_itemType == ItemDrop.ItemData.ItemType.Trophie && !IsItemNameFavorited(item);
+            return item.m_itemType == ItemDrop.ItemData.ItemType.Trophy && !IsItemNameFavorited(item);
         }
 
         public bool IsItemNameOrSlotFavorited(ItemDrop.ItemData item)

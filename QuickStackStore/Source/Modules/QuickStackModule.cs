@@ -56,7 +56,7 @@ namespace QuickStackStore
                 {
                     var item = quickStackables[i];
 
-                    if (item.m_shared.m_itemType == ItemData.ItemType.Trophie)
+                    if (item.m_shared.m_itemType == ItemData.ItemType.Trophy)
                     {
                         quickStackables.RemoveAt(i);
                         // add at beginning to keep the same order of the already sorted list
@@ -107,7 +107,7 @@ namespace QuickStackStore
                 {
                     var containerItem = container.m_inventory[i];
 
-                    if (containerItem.m_shared.m_itemType != ItemData.ItemType.Trophie)
+                    if (containerItem.m_shared.m_itemType != ItemData.ItemType.Trophy)
                     {
                         continue;
                     }

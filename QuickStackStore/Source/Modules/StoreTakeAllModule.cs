@@ -62,7 +62,7 @@ namespace QuickStackStore
         private static bool ShouldStoreItem(ItemData item, UserConfig playerConfig, int inventoryHeight, bool includeHotbar)
         {
             return (item.m_gridPos.y > 0 || includeHotbar)
-                && (StoreTakeAllConfig.StoreAllIncludesEquippedItems.Value || !item.m_equiped)
+                && (StoreTakeAllConfig.StoreAllIncludesEquippedItems.Value || !item.m_equipped)
                 && !playerConfig.IsItemNameOrSlotFavorited(item)
                 && !CompatibilitySupport.IsEquipOrQuickSlot(inventoryHeight, item.m_gridPos);
         }
@@ -127,7 +127,7 @@ namespace QuickStackStore
                     fromInventory.RemoveItem(itemData);
                     num++;
 
-                    if (itemData.m_equiped)
+                    if (itemData.m_equipped)
                     {
                         Player.m_localPlayer.RemoveEquipAction(itemData);
                         Player.m_localPlayer.UnequipItem(itemData, false);
