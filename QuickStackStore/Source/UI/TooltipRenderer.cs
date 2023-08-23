@@ -13,7 +13,8 @@ namespace QuickStackStore
         {
             typeof(ItemDrop.ItemData),
             typeof(int),
-            typeof(bool)
+            typeof(bool),
+            typeof(float)
         })]
         [HarmonyPostfix]
         public static void GetTooltip(ItemDrop.ItemData item, bool crafting, ref string __result)
