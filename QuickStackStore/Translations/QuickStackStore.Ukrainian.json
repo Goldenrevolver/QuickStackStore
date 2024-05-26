@@ -1,0 +1,37 @@
+{
+  "RestockLabelCharacter": "R",
+  "QuickStackLabelCharacter": "Q",
+  "SortLabelCharacter": "S",
+
+  "QuickStackResultMessageNothing": "Нічого для швидкого складання",
+  "QuickStackResultMessageNone": "Складено 0 предметів",
+  "QuickStackResultMessageOne": "Складено 1 предмет",
+  "QuickStackResultMessageMore": "Складено {0} предметів",
+
+  "RestockResultMessageNothing": "Нічого для поповнення",
+  "RestockResultMessageNone": "Не вдалося поповнити (0/{0})",
+  "RestockResultMessagePartial": "Частково поповнено ({0}/{1})",
+  "RestockResultMessageFull": "Повністю поповнено (всього: {0})",
+
+  "QuickStackLabel": "Швидке складання",
+  "StoreAllLabel": "Зберегти все",
+  "SortLabel": "Сортувати",
+  "RestockLabel": "Поповнити",
+  "TrashLabel": "Видалити",
+
+  "SortByInternalNameLabel": "ориг. назва",
+  "SortByTranslatedNameLabel": "укр. назва",
+  "SortByValueLabel": "вартість",
+  "SortByWeightLabel": "вага",
+  "SortByTypeLabel": "тип",
+
+  "TrashConfirmationOkayButton": "Видалити",
+  "QuickTrashConfirmation": "Швидке видалення?",
+  "CantTrashFavoritedItemWarning": "Неможливо видалити улюблений предмет!",
+  "CantTrashFlagFavoritedItemWarning": "Неможливо позначити улюблений предмет для видалення!",
+  "CantTrashHotkeyBarItemWarning": "Налаштування не дозволяють видаляти предмет з панелі швидкого доступу!",
+  "CantFavoriteTrashFlaggedItemWarning": "Неможливо позначити для улюбленого предмет, призначений для видалення!",
+
+  "FavoritedItemTooltip": "Не буде швидко складено, відсортовано,\nзбережено все або видалено",
+  "TrashFlaggedItemTooltip": "Можна швидко видалити"
+}
