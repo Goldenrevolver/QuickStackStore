@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.4.10
+- Update for current public release 0.219.14
 ## 1.4.9
 - Added support for Dynamic Storage Piles mod to allow quick stacking the restricted item into a pile even when it's empty
 - Added Ukrainian translation
