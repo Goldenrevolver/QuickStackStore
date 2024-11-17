@@ -272,7 +272,7 @@ namespace QuickStackStore
 
                 if (assembly != null)
                 {
-                    var type = assembly.GetTypes().First(a => a.IsClass && a.Name == "ComfyQuickSlots");
+                    var type = assembly.GetTypes().First(a => a.IsClass && a.Name == "QuickSlotsManager");
                     var pubStaticMethods = type.GetMethods(BindingFlags.Public | BindingFlags.Static);
                     IsComfyArmorSlot = pubStaticMethods.First(t => t.Name?.ToLower() == "IsArmorSlot".ToLower() && t.GetParameters().Length == 1);
                 }

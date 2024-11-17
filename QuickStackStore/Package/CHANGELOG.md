@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.4.11
+- Fixed compatibility with ComfyQuickSlots 1.7.0
 ## 1.4.10
 - Update for current public release 0.219.14
 ## 1.4.9

@@ -13,7 +13,7 @@ namespace QuickStackStore
     {
         public const string GUID = "goldenrevolver.quick_stack_store";
         public const string NAME = "Quick Stack - Store - Sort - Trash - Restock";
-        public const string VERSION = "1.4.10";
+        public const string VERSION = "1.4.11";
 
         // intentionally not Awake, so the chainloader is done (for compatibility checks, mostly in the config)
         protected void Start()
