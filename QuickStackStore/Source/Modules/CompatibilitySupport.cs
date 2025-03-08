@@ -42,6 +42,7 @@ namespace QuickStackStore
         public const string jewelCrafting = "org.bepinex.plugins.jewelcrafting";
         public const string recyclePlus = "TastyChickenLegs.RecyclePlus";
         public const string dynamicStoragePiles = "com.maxsch.valheim.DynamicStoragePiles";
+        public const string currencyPockets = "Azumatt.CurrencyPocket";
 
         public static System.Version mucUpdateVersion = new System.Version(0, 4, 0);
         public static System.Version azuEPIOnOffUpdate = new System.Version(1, 2, 0);

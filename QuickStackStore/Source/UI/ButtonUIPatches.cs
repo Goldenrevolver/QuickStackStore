@@ -18,6 +18,8 @@ namespace QuickStackStore
                 hasOpenedInventoryOnce = true;
 
                 MainButtonUpdate.UpdateInventoryGuiButtons(__instance);
+
+                hasCompletedOpeningInventoryOnce = true;
             }
 
             [HarmonyPriority(Priority.LowerThanNormal)]
@@ -61,6 +63,7 @@ namespace QuickStackStore
             {
                 hasOpenedInventoryOnce = false;
                 TrashModule.TrashItemsPatches.hasOpenedInventoryOnce = false;
+                hasCompletedOpeningInventoryOnce = false;
 
                 origButtonLength = -1;
                 origButtonPosition = default;

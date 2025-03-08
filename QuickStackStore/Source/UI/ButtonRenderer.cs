@@ -13,6 +13,7 @@ namespace QuickStackStore
     internal class ButtonRenderer
     {
         internal static bool hasOpenedInventoryOnce = false;
+        internal static bool hasCompletedOpeningInventoryOnce = false;
         internal static float origButtonLength = -1;
         internal static Vector3 origButtonPosition;
 
@@ -146,7 +147,17 @@ namespace QuickStackStore
 
                 int miniButtons = 0;
 
-                Transform weight = __instance.m_player.transform.Find("Weight");
+                bool hasSpawnedCurrencyPocketUI = false;
+                Transform anchor;
+                if (HasPlugin(currencyPockets))
+                {
+                    hasSpawnedCurrencyPocketUI = hasCompletedOpeningInventoryOnce;
+                    anchor = __instance.m_player.transform.Find("CoinPocketUI");
+                }
+                else
+                {
+                    anchor = __instance.m_player.transform.Find("Weight");
+                }
 
                 RandyStatus randyStatus = HasRandyPlugin();
 
@@ -162,7 +173,7 @@ namespace QuickStackStore
 
                         if (shouldShow)
                         {
-                            __instance.StartCoroutine(WaitAFrameToRepositionMiniButton(__instance, sortInventoryButton.transform, weight, ++miniButtons, randyStatus));
+                            __instance.StartCoroutine(WaitAFrameToRepositionMiniButton(__instance, sortInventoryButton.transform, anchor, ++miniButtons, randyStatus, hasSpawnedCurrencyPocketUI));
                         }
 
                         sortInventoryButton.onClick.AddListener(new UnityAction(() => SortModule.SortPlayerInv(Player.m_localPlayer.m_inventory, UserConfig.GetPlayerConfig(Player.m_localPlayer.GetPlayerID()))));
@@ -173,7 +184,7 @@ namespace QuickStackStore
 
                         if (shouldShow)
                         {
-                            RepositionMiniButton(__instance, sortInventoryButton.transform, weight, ++miniButtons, randyStatus);
+                            RepositionMiniButton(__instance, sortInventoryButton.transform, anchor, ++miniButtons, randyStatus, hasSpawnedCurrencyPocketUI);
                         }
                     }
                 }
@@ -191,7 +202,7 @@ namespace QuickStackStore
 
                         if (shouldShow)
                         {
-                            __instance.StartCoroutine(WaitAFrameToRepositionMiniButton(__instance, restockAreaButton.transform, weight, ++miniButtons, randyStatus));
+                            __instance.StartCoroutine(WaitAFrameToRepositionMiniButton(__instance, restockAreaButton.transform, anchor, ++miniButtons, randyStatus, hasSpawnedCurrencyPocketUI));
                         }
 
                         restockAreaButton.onClick.AddListener(new UnityAction(() => RestockModule.DoRestock(Player.m_localPlayer)));
@@ -202,7 +213,7 @@ namespace QuickStackStore
 
                         if (shouldShow)
                         {
-                            RepositionMiniButton(__instance, restockAreaButton.transform, weight, ++miniButtons, randyStatus);
+                            RepositionMiniButton(__instance, restockAreaButton.transform, anchor, ++miniButtons, randyStatus, hasSpawnedCurrencyPocketUI);
                         }
                     }
                 }
@@ -218,7 +229,7 @@ namespace QuickStackStore
 
                         if (shouldShow)
                         {
-                            __instance.StartCoroutine(WaitAFrameToRepositionMiniButton(__instance, quickStackAreaButton.transform, weight, ++miniButtons, randyStatus));
+                            __instance.StartCoroutine(WaitAFrameToRepositionMiniButton(__instance, quickStackAreaButton.transform, anchor, ++miniButtons, randyStatus, hasSpawnedCurrencyPocketUI));
                         }
 
                         quickStackAreaButton.onClick.AddListener(new UnityAction(() => QuickStackModule.DoQuickStack(Player.m_localPlayer)));
@@ -229,7 +240,7 @@ namespace QuickStackStore
 
                         if (shouldShow)
                         {
-                            RepositionMiniButton(__instance, quickStackAreaButton.transform, weight, ++miniButtons, randyStatus);
+                            RepositionMiniButton(__instance, quickStackAreaButton.transform, anchor, ++miniButtons, randyStatus, hasSpawnedCurrencyPocketUI);
                         }
                     }
                 }
@@ -239,36 +250,46 @@ namespace QuickStackStore
                 if (displayFavoriteToggleButton != FavoritingToggling.Disabled)
                 {
                     int index;
-                    Transform parent;
+                    Transform favoritingAnchor;
 
-                    if (displayFavoriteToggleButton == FavoritingToggling.EnabledBottomButton)
+                    if (displayFavoriteToggleButton == FavoritingToggling.EnabledBottomButton || HasPlugin(currencyPockets))
                     {
                         index = ++miniButtons;
-                        parent = weight;
+                        favoritingAnchor = anchor;
                     }
                     else
                     {
                         index = -1;
-                        parent = __instance.m_player.transform.Find("Armor");
+                        favoritingAnchor = __instance.m_player.transform.Find("Armor");
                     }
+
+                    bool shouldShow = !(__instance.m_currentContainer && randyStatus == RandyStatus.EnabledWithQuickSlots);
 
                     if (favoritingTogglingButton == null)
                     {
                         favoritingTogglingButton = CreateMiniButton(__instance, nameof(favoritingTogglingButton), KeybindChecker.joyFavoriteToggling);
-                        favoritingTogglingButton.gameObject.SetActive(true);
+                        favoritingTogglingButton.gameObject.SetActive(shouldShow);
 
                         favoritingTogglingButtonText = favoritingTogglingButton.transform.Find("Text").GetComponent<TextMeshProUGUI>();
 
                         // trigger text reset without changing value
                         FavoritingMode.RefreshDisplay();
 
-                        __instance.StartCoroutine(WaitAFrameToRepositionMiniButton(__instance, favoritingTogglingButton.transform, parent, index, randyStatus));
+                        if (shouldShow)
+                        {
+                            __instance.StartCoroutine(WaitAFrameToRepositionMiniButton(__instance, favoritingTogglingButton.transform, favoritingAnchor, index, randyStatus, hasSpawnedCurrencyPocketUI));
+                        }
 
                         favoritingTogglingButton.onClick.AddListener(new UnityAction(() => FavoritingMode.ToggleFavoriteToggling()));
                     }
                     else
                     {
-                        RepositionMiniButton(__instance, favoritingTogglingButton.transform, parent, index, randyStatus);
+                        favoritingTogglingButton.gameObject.SetActive(shouldShow);
+
+                        if (shouldShow)
+                        {
+                            RepositionMiniButton(__instance, favoritingTogglingButton.transform, favoritingAnchor, index, randyStatus, hasSpawnedCurrencyPocketUI);
+                        }
                     }
                 }
 
@@ -287,7 +308,7 @@ namespace QuickStackStore
                         else
                         {
                             // jump to the opposite side of the default 'take all' button position, because we are out of space due to randy's quickslots
-                            bool forcePutAtOppositeOfTakeAll = randyStatus == RandyStatus.EnabledWithQuickSlots;
+                            bool forcePutAtOppositeOfTakeAll = randyStatus == RandyStatus.EnabledWithQuickSlots || HasPlugin(currencyPockets);
 
                             // revert the vertical movement from the 'take all' button
                             MoveButtonToIndex(ref quickStackToContainerButton, startOffset, -vOffset, extraContainerButtons, 1, forcePutAtOppositeOfTakeAll);
@@ -437,11 +458,13 @@ namespace QuickStackStore
             return button;
         }
 
-        private static void RepositionMiniButton(InventoryGui instance, Transform button, Transform weight, int existingMiniButtons, RandyStatus randyStatus)
+        private static void RepositionMiniButton(InventoryGui instance, Transform button, Transform anchor, int existingMiniButtons, RandyStatus randyStatus, bool hasSpawnedCurrencyPocketUI)
         {
+            float currencyPocketOffsetFix = HasPlugin(currencyPockets) && !hasSpawnedCurrencyPocketUI ? 45f : 0f;
+
             if (existingMiniButtons == -1)
             {
-                button.localPosition = weight.localPosition + new Vector3(hAlign, 70f);
+                button.localPosition = anchor.localPosition + new Vector3(hAlign, 70f + currencyPocketOffsetFix);
                 return;
             }
 
@@ -449,26 +472,36 @@ namespace QuickStackStore
 
             if (randyStatus == RandyStatus.EnabledWithQuickSlots)
             {
-                button.localPosition = weight.localPosition + new Vector3(hAlign, -distanceToMove + normalMiniButtonVOffset);
+                float vPos = -distanceToMove + normalMiniButtonVOffset + currencyPocketOffsetFix;
+
+                button.localPosition = anchor.localPosition + new Vector3(hAlign, vPos);
             }
             else
             {
-                bool shouldMoveLower = HasPluginThatRequiresMiniButtonVMove() && (instance.m_player.Find("EquipmentBkg") != null || instance.m_player.Find("AzuEquipmentBkg") != null);
-                shouldMoveLower |= randyStatus == RandyStatus.EnabledWithoutQuickSlots;
+                float vPos;
+                if (HasPlugin(currencyPockets))
+                {
+                    vPos = normalMiniButtonVOffset + 2f + currencyPocketOffsetFix;
+                }
+                else
+                {
+                    bool hasSpawnedEquipBkg = HasPluginThatRequiresMiniButtonVMove() && (instance.m_player.Find("AzuEquipmentBkg") != null || instance.m_player.Find("EquipmentBkg") != null);
+                    hasSpawnedEquipBkg |= randyStatus == RandyStatus.EnabledWithoutQuickSlots;
 
-                float vPos = shouldMoveLower ? lowerMiniButtonVOffset : normalMiniButtonVOffset;
+                    vPos = hasSpawnedEquipBkg ? lowerMiniButtonVOffset : normalMiniButtonVOffset;
+                }
 
-                button.localPosition = weight.localPosition + new Vector3(hAlign + distanceToMove, vPos);
+                button.localPosition = anchor.localPosition + new Vector3(hAlign + distanceToMove, vPos);
             }
         }
 
         /// <summary>
         /// Wait for one frame, so the two Odin equipment slot mods can finish spawning the 'EquipmentBkg' object
         /// </summary>
-        internal static IEnumerator WaitAFrameToRepositionMiniButton(InventoryGui instance, Transform button, Transform weight, int existingMiniButtons, RandyStatus randyStatus)
+        internal static IEnumerator WaitAFrameToRepositionMiniButton(InventoryGui instance, Transform button, Transform anchor, int existingMiniButtons, RandyStatus randyStatus, bool hasSpawnedCurrencyPocketUI)
         {
             yield return null;
-            RepositionMiniButton(instance, button, weight, existingMiniButtons, randyStatus);
+            RepositionMiniButton(instance, button, anchor, existingMiniButtons, randyStatus, hasSpawnedCurrencyPocketUI);
         }
 
         /// <summary>
