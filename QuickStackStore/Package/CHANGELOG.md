@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.12
+- Fixed trash can no longer working with the newest public release 0.220.3
+- Added dynamic placement support for the mini buttons when using the newest version of Currency Pocket by Azumatt
+- Added new option 'PreventAutoPickupOfTrashFlaggedItems', disabled by default, added by request by Y4NN1CK
 ## 1.4.11
 - Fixed compatibility with ComfyQuickSlots 1.7.0
 ## 1.4.10
