@@ -230,8 +230,6 @@ namespace QuickStackStore
 
         public class TrashButton : MonoBehaviour
         {
-            protected Canvas canvas;
-            protected GraphicRaycaster raycaster;
             protected RectTransform rectTransform;
             protected GameObject buttonGo;
 
@@ -283,10 +281,6 @@ namespace QuickStackStore
                 rectTransform.anchoredPosition = Vector2.zero;
                 rectTransform.sizeDelta = new Vector2(70, 74);
 
-                // Add canvas and raycaster for DelayedOverrideSorting
-                canvas = buttonGo.AddComponent<Canvas>();
-                raycaster = buttonGo.AddComponent<GraphicRaycaster>();
-
                 // Add trash ui button
                 Button button = buttonGo.AddComponent<Button>();
                 button.onClick.AddListener(() => TrashOrTrashFlagItem());
@@ -306,24 +300,6 @@ namespace QuickStackStore
                 newFrame.GetComponent<RectTransform>().anchoredPosition = new Vector2(6, 7.5f);
 
                 gameObject.AddComponent<TrashFrameHandler>().frame = newFrame;
-            }
-
-            protected void OnEnable()
-            {
-                StartCoroutine(DelayedOverrideSorting());
-            }
-
-            private IEnumerator DelayedOverrideSorting()
-            {
-                yield return null;
-
-                if (canvas == null)
-                {
-                    yield break;
-                }
-
-                canvas.overrideSorting = true;
-                canvas.sortingOrder = 1;
             }
         }
 
