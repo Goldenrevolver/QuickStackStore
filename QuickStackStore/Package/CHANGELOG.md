@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.4.13
+- Fixed crossplay multiplayer not working (updated ServerSync)
 ## 1.4.12
 - Fixed trash can no longer working with the newest public release 0.220.3
 - Added dynamic placement support for the mini buttons when using the newest version of Currency Pocket by Azumatt

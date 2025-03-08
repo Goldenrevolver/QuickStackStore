@@ -1,7 +1,7 @@
 {
   "name": "Quick_Stack_Store_Sort_Trash_Restock",
   "description": "Quick Stacking, Sorting, Trashing and more in one cohesive package",
-  "version_number": "1.4.12",
+  "version_number": "1.4.13",
   "website_url": "https://www.nexusmods.com/valheim/mods/2094",
   "dependencies": [
     "denikson-BepInExPack_Valheim-5.4.2202"
