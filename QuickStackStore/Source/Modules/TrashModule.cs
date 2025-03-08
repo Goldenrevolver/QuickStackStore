@@ -1,5 +1,7 @@
 ﻿using HarmonyLib;
-using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -225,6 +227,53 @@ namespace QuickStackStore
                     clickState = 0;
                     return;
                 }
+            }
+        }
+
+        [HarmonyPatch(typeof(Player))]
+        internal static class TrashItemPlayerPatches
+        {
+            [HarmonyPatch(nameof(Player.AutoPickup)), HarmonyTranspiler]
+            private static IEnumerable<CodeInstruction> AutoPickupTranspiler(IEnumerable<CodeInstruction> instructions)
+            {
+                FieldInfo autoPickupField = AccessTools.DeclaredField(typeof(ItemDrop), nameof(ItemDrop.m_autoPickup));
+                MethodInfo shouldAutoPickupMethod = AccessTools.DeclaredMethod(typeof(TrashItemPlayerPatches), nameof(TrashItemPlayerPatches.ShouldAutoPickup));
+
+                return new CodeMatcher(instructions)
+                    .MatchForward(false, new CodeMatch(i => i.LoadsField(autoPickupField)))
+                    .InsertAndAdvance(
+                        new CodeInstruction(OpCodes.Dup) // local ItemDrop variable
+                    )
+                    .Advance(1)
+                    .InsertAndAdvance(
+                        new CodeInstruction(OpCodes.Ldarg_0) // 'this' object
+                    )
+                    .InsertAndAdvance(
+                        new CodeInstruction(OpCodes.Call, shouldAutoPickupMethod)
+                    )
+                    .Instructions();
+            }
+
+            public static bool ShouldAutoPickup(ItemDrop itemDrop, bool isAutoPickupable, Player player)
+            {
+                if (!itemDrop || itemDrop.m_itemData == null || itemDrop.m_itemData.m_shared == null)
+                {
+                    return isAutoPickupable;
+                }
+
+                if (player == null || player != Player.m_localPlayer || !TrashConfig.PreventAutoPickupOfTrashFlaggedItems.Value)
+                {
+                    return isAutoPickupable;
+                }
+
+                if (!isAutoPickupable)
+                {
+                    return isAutoPickupable;
+                }
+
+                var playerConfig = UserConfig.GetPlayerConfig(player.GetPlayerID());
+
+                return !playerConfig.IsItemNameConsideredTrashFlagged(itemDrop.m_itemData.m_shared);
             }
         }
 

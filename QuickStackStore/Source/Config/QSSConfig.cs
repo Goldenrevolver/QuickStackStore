@@ -144,6 +144,7 @@ namespace QuickStackStore
             public static ConfigEntry<bool> AlwaysConsiderTrophiesTrashFlagged;
             public static ConfigEntry<bool> DisplayTrashCanUI;
             public static ConfigEntry<bool> EnableQuickTrash;
+            public static ConfigEntry<bool> PreventAutoPickupOfTrashFlaggedItems;
             public static ConfigEntry<KeyboardShortcut> QuickTrashKeybind;
             public static ConfigEntry<ShowConfirmDialogOption> ShowConfirmDialogForNormalItem;
             public static ConfigEntry<bool> ShowConfirmDialogForQuickTrash;
@@ -378,6 +379,8 @@ namespace QuickStackStore
             DisplayTrashCanUI.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin, true);
 
             EnableQuickTrash = Config.Bind(sectionName, nameof(EnableQuickTrash), true, HiddenTrashingDisplay("Whether quick trashing can be called with the hotkey or be clicking on the trash can while not holding anything."));
+
+            PreventAutoPickupOfTrashFlaggedItems = Config.Bind(sectionName, nameof(PreventAutoPickupOfTrashFlaggedItems), false, HiddenTrashingDisplay("Whether a trash flagged item should additionally no longer be automatically picked up in the world by walking near it. It can still be manually picked up by using the interact button."));
 
             QuickTrashKeybind = Config.Bind(sectionName, nameof(QuickTrashKeybind), new KeyboardShortcut(KeyCode.None), HiddenTrashingDisplay($"The hotkey to perform a quick trash on the player inventory, deleting all trash flagged items ({overrideHotkey})."));
             KeyCodeBackwardsCompatibility(QuickTrashKeybind, sectionName, "QuickTrashHotkey");
