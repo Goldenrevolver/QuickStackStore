@@ -70,10 +70,6 @@ namespace QuickStackStore
                         localization.m_translations[takeAllKey] = "Take All";
                         break;
 
-                    case "Russian":
-                        localization.m_translations[takeAllKey] = "взять всё";
-                        break;
-
                     case "French":
                         localization.m_translations[takeAllKey] = "Tout Prendre";
                         break;
