@@ -7,7 +7,11 @@
             <InputAssemblies Include="$(OutputPath)YamlDotNet.dll" />
             <InputAssemblies Include="$(OutputPath)ServerSync.dll" />
             <InputAssemblies Include="$(OutputPath)AzuExtendedPlayerInventoryAPI.dll" />
+            <LibraryPath Include="$(OutputPath)" />
+            <LibraryPath Include="$(GameDir)\BepInEx\core" />
+            <LibraryPath Include="$(GameDir)\valheim_Data\Managed" />
+            <LibraryPath Include="$(GameDir)\valheim_Data\Managed\publicized_assemblies" />
         </ItemGroup>
-        <ILRepack Parallel="true" DebugInfo="true" Internalize="true" InputAssemblies="@(InputAssemblies)" OutputFile="$(TargetPath)" TargetKind="SameAsPrimaryAssembly" LibraryPath="$(OutputPath)" />
+        <ILRepack Parallel="true" DebugInfo="true" Internalize="true" InputAssemblies="@(InputAssemblies)" OutputFile="$(TargetPath)" TargetKind="SameAsPrimaryAssembly" LibraryPath="@(LibraryPath)" />
     </Target>
 </Project>

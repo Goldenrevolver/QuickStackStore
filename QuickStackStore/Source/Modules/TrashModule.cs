@@ -367,7 +367,7 @@ namespace QuickStackStore
                 return;
             }
 
-            dialog = Object.Instantiate(InventoryGui.instance.m_splitPanel.gameObject, InventoryGui.instance.transform);
+            dialog = Object.Instantiate(InventoryGui.instance.m_splitDialog.m_panel.gameObject, InventoryGui.instance.transform);
 
             var okButton = dialog.transform.Find("win_bkg/Button_ok").GetComponent<Button>();
             okButton.onClick.RemoveAllListeners();

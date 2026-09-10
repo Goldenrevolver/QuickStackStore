@@ -10,7 +10,7 @@ namespace QuickStackStore
     [HarmonyPatch(typeof(InventoryGrid))]
     internal class InventoryGridButtonHandlingPatches
     {
-        [HarmonyPatch(nameof(InventoryGrid.OnRightClick)), HarmonyPrefix]
+        [HarmonyPatch(nameof(InventoryGrid.OnRightDown)), HarmonyPrefix]
         private static bool OnRightClick(InventoryGrid __instance, UIInputHandler element)
         {
             return HandleClick(__instance, element, false);
