@@ -367,7 +367,7 @@ namespace QuickStackStore
                 return;
             }
 
-            dialog = Object.Instantiate(InventoryGui.instance.m_splitPanel.gameObject, InventoryGui.instance.transform);
+            dialog = Object.Instantiate(InventoryGui.instance.m_splitDialog.gameObject, InventoryGui.instance.transform);
 
             var okButton = dialog.transform.Find("win_bkg/Button_ok").GetComponent<Button>();
             okButton.onClick.RemoveAllListeners();
@@ -398,9 +398,9 @@ namespace QuickStackStore
 
             var amountComp = dialog.transform.Find("win_bkg/amount").GetComponent<TextMeshProUGUI>();
 
-            amountComp.text = amountText;
-
             dialog.gameObject.SetActive(true);
+
+            amountComp.text = amountText;
         }
 
         private static void OnChoice()

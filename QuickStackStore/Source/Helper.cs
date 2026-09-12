@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using UnityEngine;
 using static QuickStackStore.QSSConfig;
@@ -7,6 +8,8 @@ namespace QuickStackStore
 {
     public static class Helper
     {
+        private static MethodInfo LoadImage;
+
         internal static void Log(object s, DebugSeverity debugSeverity = DebugSeverity.Normal)
         {
             if ((int)debugSeverity > (int)(DebugConfig.DebugSeverity?.Value ?? 0))
@@ -72,7 +75,32 @@ namespace QuickStackStore
             using (MemoryStream mStream = new MemoryStream())
             {
                 imageStream.CopyTo(mStream);
-                texture.LoadImage(mStream.ToArray());
+
+                // texture.LoadImage(mStream.ToArray());
+                // prevents a conflict between .Net Standard 2.1 and Unity/.NET Framework 4.8
+                // the correct method is available at runtime
+                if (LoadImage == null)
+                {
+                    var imageConversionAssembly =
+                        System.Reflection.Assembly.Load("UnityEngine.ImageConversionModule");
+                    var imageConversionType =
+                        imageConversionAssembly.GetType("UnityEngine.ImageConversion");
+
+                    LoadImage = imageConversionType.GetMethod(
+                        "LoadImage",
+                        new[] { typeof(Texture2D), typeof(byte[]) }
+                    );
+
+                    if (LoadImage == null)
+                    {
+                        throw new MissingMethodException(
+                            "Could not find UnityEngine.ImageConversion.LoadImage(Texture2D, byte[])"
+                        );
+                    }
+                }
+
+                LoadImage.Invoke(null, new object[] { texture, mStream.ToArray() });
+
                 texture.Apply();
                 return Sprite.Create(texture, size, pivot.Value, units);
             }

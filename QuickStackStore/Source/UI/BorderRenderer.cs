@@ -15,7 +15,7 @@ namespace QuickStackStore
 
         [HarmonyPatch(nameof(InventoryGrid.UpdateGui))]
         [HarmonyPostfix]
-        internal static void UpdateGui(Player player, Inventory ___m_inventory, List<InventoryGrid.Element> ___m_elements)
+        internal static void UpdateGui(Player player, Inventory ___m_inventory, List<InventoryElement> ___m_elements)
         {
             if (player == null || player.m_inventory != ___m_inventory)
             {

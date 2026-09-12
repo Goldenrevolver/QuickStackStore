@@ -10,14 +10,14 @@ namespace QuickStackStore
     [HarmonyPatch(typeof(InventoryGrid))]
     internal class InventoryGridButtonHandlingPatches
     {
-        [HarmonyPatch(nameof(InventoryGrid.OnRightClick)), HarmonyPrefix]
-        private static bool OnRightClick(InventoryGrid __instance, UIInputHandler element)
+        [HarmonyPatch(nameof(InventoryGrid.OnRightDown)), HarmonyPrefix]
+        private static bool OnRightDown(InventoryGrid __instance, UIInputHandler element)
         {
             return HandleClick(__instance, element, false);
         }
 
-        [HarmonyPatch(nameof(InventoryGrid.OnLeftClick)), HarmonyPrefix]
-        private static bool OnLeftClick(InventoryGrid __instance, UIInputHandler clickHandler)
+        [HarmonyPatch(nameof(InventoryGrid.OnLeftDown)), HarmonyPrefix]
+        private static bool OnLeftDown(InventoryGrid __instance, UIInputHandler clickHandler)
         {
             return HandleClick(__instance, clickHandler, true);
         }
