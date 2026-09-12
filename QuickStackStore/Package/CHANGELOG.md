@@ -1,7 +1,7 @@
 # Changelog
 
 ## 1.4.14
-- Fixed for 1.0 release
+- Updated for 1.0 release
 ## 1.4.13
 - Fixed crossplay multiplayer not working (updated ServerSync)
 ## 1.4.12
