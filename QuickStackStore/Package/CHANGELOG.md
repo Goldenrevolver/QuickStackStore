@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.4.15
+- Hotfix for compatibility with Equipment and Quickslots (proper support of new API will come later)
 ## 1.4.14
 - Updated for 1.0 release
 ## 1.4.13

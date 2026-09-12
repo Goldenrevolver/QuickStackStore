@@ -65,7 +65,7 @@ namespace QuickStackStore
 
         public static bool ShouldBlockChangesToTakeAllButtonDueToPlugin()
         {
-            return HasPlugin(smartContainers) || HasPlugin(backpacks) || HasPlugin(jewelCrafting);
+            return HasPlugin(smartContainers) || HasPlugin(backpacks) || HasPlugin(jewelCrafting) || HasRandyPlugin() == RandyStatus.EnabledWithQuickSlots;
         }
 
         public static bool HasOutdatedMUCPlugin()
@@ -117,6 +117,7 @@ namespace QuickStackStore
 
             RandyStatus randyStatus = RandyStatus.EnabledWithQuickSlots;
 
+            /* temporarily disabled, I want to work with the author and properly use the API instead of hacking it again
             if (RandyQuickSlotsEnabled == null)
             {
                 var assembly = Assembly.Load("EquipmentAndQuickSlots");
@@ -133,6 +134,7 @@ namespace QuickStackStore
             {
                 randyStatus = RandyStatus.EnabledWithoutQuickSlots;
             }
+            */
 
             return randyStatus;
         }
