@@ -151,6 +151,9 @@
     <EmbeddedResource Include="Translations\QuickStackStore.Ukrainian.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Translations\QuickStackStore.Spanish.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\border.png" />

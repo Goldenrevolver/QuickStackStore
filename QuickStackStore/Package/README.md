@@ -138,7 +138,8 @@ The Polish translation was provided by [ViRooz](https://www.nexusmods.com/users/
 The Swedish translation was provided by [DeathDaisy](https://github.com/DeathDaisy).\
 The Korean translation was provided by [hanawa07](https://www.nexusmods.com/users/134678658).\
 The Italian translation was provided by [Marcuz08](https://github.com/marcowesii).\
-The Ukrainian translation was provided by [cawa-93](https://github.com/cawa-93).
+The Ukrainian translation was provided by [cawa-93](https://github.com/cawa-93).\
+The Spanish translation was provided by [PenWallet](https://www.nexusmods.com/profile/PenWallet).
 
 Source code available on github: https://github.com/Goldenrevolver/QuickStackStore \
 If you want to support me, check out my ko-fi: https://ko-fi.com/goldenrevolver

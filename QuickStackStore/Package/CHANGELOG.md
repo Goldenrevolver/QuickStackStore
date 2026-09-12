@@ -1,9 +1,12 @@
 # Changelog
 
+## 1.4.16
+- Added spanish translation by PenWallet
 ## 1.4.15
 - Hotfix for compatibility with Equipment and Quickslots (proper support of new API will come later)
 ## 1.4.14
 - Updated for 1.0 release
+- Updated russian translation by shudnal
 ## 1.4.13
 - Fixed crossplay multiplayer not working (updated ServerSync)
 ## 1.4.12

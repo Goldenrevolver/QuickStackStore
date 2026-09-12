@@ -12,7 +12,7 @@ namespace QuickStackStore
     {
         private const string keyPrefix = "quickstackstore_";
 
-        public static string[] supportedEmbeddedLanguages = new[] { "English", "Chinese", "Russian", "French", "Portuguese_Brazilian", "Polish", "Swedish", "Korean", "Italian", "Ukrainian" };
+        public static string[] supportedEmbeddedLanguages = new[] { "English", "Chinese", "Russian", "French", "Portuguese_Brazilian", "Polish", "Swedish", "Korean", "Italian", "Ukrainian", "Spanish" };
 
         private const string embeddedLanguagePathFormat = "QuickStackStore.Translations.QuickStackStore.{0}.json";
 

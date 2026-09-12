@@ -82,7 +82,7 @@ namespace QuickStackStore
                 if (LoadImage == null)
                 {
                     var imageConversionAssembly =
-                        System.Reflection.Assembly.Load("UnityEngine.ImageConversionModule");
+                        Assembly.Load("UnityEngine.ImageConversionModule");
                     var imageConversionType =
                         imageConversionAssembly.GetType("UnityEngine.ImageConversion");
 

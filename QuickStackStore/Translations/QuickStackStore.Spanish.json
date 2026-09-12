@@ -1,0 +1,37 @@
+{
+  "RestockLabelCharacter": "R",
+  "QuickStackLabelCharacter": "D",
+  "SortLabelCharacter": "O",
+
+  "QuickStackResultMessageNothing": "Nada que depositar",
+  "QuickStackResultMessageNone": "Depositados 0 objetos",
+  "QuickStackResultMessageOne": "Depositado 1 objeto",
+  "QuickStackResultMessageMore": "Depositados {0} objetos",
+
+  "RestockResultMessageNothing": "Nada que reponer",
+  "RestockResultMessageNone": "No se puede reponer (0/{0})",
+  "RestockResultMessagePartial": "Repuesto parcialmente ({0}/{1})",
+  "RestockResultMessageFull": "Repuesto totalmente (total: {0})",
+
+  "QuickStackLabel": "Depósito rápido",
+  "StoreAllLabel": "Depositar Todo",
+  "SortLabel": "Ordenar",
+  "RestockLabel": "Reponer",
+  "TrashLabel": "Borrar",
+
+  "SortByInternalNameLabel": "nombre int.",
+  "SortByTranslatedNameLabel": "nombre trad.",
+  "SortByValueLabel": "valor",
+  "SortByWeightLabel": "peso",
+  "SortByTypeLabel": "tipo",
+
+  "TrashConfirmationOkayButton": "Borrar",
+  "QuickTrashConfirmation": "¿Borrar rápidamente?",
+  "CantTrashFavoritedItemWarning": "No se puede borrar un objeto favorito",
+  "CantTrashFlagFavoritedItemWarning": "No se puede puede marcar para borrado un objeto favorito",
+  "CantTrashHotkeyBarItemWarning": "Tus ajustes no permiten borrar objetos en la barra de acceso directo",
+  "CantFavoriteTrashFlaggedItemWarning": "No puedes marcar como favorito un objeto marcado para borrar",
+
+  "FavoritedItemTooltip": "No le afectará depositar rápidamente,\nordenar, depositar todo o borrar",
+  "TrashFlaggedItemTooltip": "Puede ser borrado rápidamente"
+}
