@@ -224,7 +224,7 @@ namespace QuickStackStore
 
                     if (quickStackAreaButton == null)
                     {
-                        quickStackAreaButton = CreateMiniButton(__instance, nameof(quickStackAreaButton), KeybindChecker.joyQuickStack);
+                        quickStackAreaButton = CreateMiniButton(__instance, nameof(quickStackAreaButton), KeybindChecker.JoyQuickStack);
                         quickStackAreaButton.gameObject.SetActive(shouldShow);
 
                         if (shouldShow)
@@ -299,7 +299,7 @@ namespace QuickStackStore
                 {
                     if (quickStackToContainerButton == null)
                     {
-                        quickStackToContainerButton = CreateBigButton(__instance, nameof(quickStackToContainerButton), KeybindChecker.joyQuickStack);
+                        quickStackToContainerButton = CreateBigButton(__instance, nameof(quickStackToContainerButton), KeybindChecker.JoyQuickStack);
 
                         if (ShouldBlockChangesToTakeAllButton() && randyStatus != RandyStatus.EnabledWithQuickSlots)
                         {
@@ -324,7 +324,7 @@ namespace QuickStackStore
                 {
                     if (storeAllButton == null)
                     {
-                        storeAllButton = CreateBigButton(__instance, nameof(storeAllButton), KeybindChecker.joyStoreAll);
+                        storeAllButton = CreateBigButton(__instance, nameof(storeAllButton), KeybindChecker.JoyStoreAll);
                         MoveButtonToIndex(ref storeAllButton, startOffset, vOffset, extraContainerButtons, ++buttonsBelowTakeAll);
 
                         storeAllButton.onClick.AddListener(new UnityAction(() => StoreTakeAllModule.StoreAllItemsInOrder(Player.m_localPlayer)));
