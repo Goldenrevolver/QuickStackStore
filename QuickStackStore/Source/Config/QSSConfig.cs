@@ -51,6 +51,8 @@ namespace QuickStackStore
         {
             public static ConfigEntry<DPadUsage> ControllerDPadUsageInInventoryGrid;
             public static ConfigEntry<KeyboardShortcut> ControllerDPadUsageModifierKeybind;
+            public static ConfigEntry<ControllerButton> ControllerQuickStackButton;
+            public static ConfigEntry<ControllerButton> ControllerStoreAllButton;
 
             public static ConfigEntry<bool> RemoveControllerButtonHintFromTakeAllButton;
             public static ConfigEntry<bool> UseHardcodedControllerSupport;
@@ -231,6 +233,14 @@ namespace QuickStackStore
 
             ControllerDPadUsageInInventoryGrid = Config.Bind(sectionName, nameof(ControllerDPadUsageInInventoryGrid), DPadUsage.Keybinds, "In the base game the DPad and the left stick are both used for slot movement inside the inventory grid. This allows you to exclude the DPad from this to get more keys for keybinds.");
             ControllerDPadUsageModifierKeybind = Config.Bind(sectionName, nameof(ControllerDPadUsageModifierKeybind), new KeyboardShortcut(KeyCode.None), $"When {nameof(ControllerDPadUsageInInventoryGrid)} is set to {DPadUsage.KeybindsWhileHoldingModifierKey}, then holding this prevents slot movement in the inventory grid with the DPad.");
+
+            string controllerButtonDescription = $"Which controller button triggers '{{0}}' while {nameof(UseHardcodedControllerSupport)} is enabled. DPad buttons only work when {nameof(ControllerDPadUsageInInventoryGrid)} allows keybinds.";
+
+            ControllerQuickStackButton = Config.Bind(sectionName, nameof(ControllerQuickStackButton), ControllerButton.DPadDown, string.Format(controllerButtonDescription, "Quick Stack"));
+            ControllerQuickStackButton.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
+
+            ControllerStoreAllButton = Config.Bind(sectionName, nameof(ControllerStoreAllButton), ControllerButton.RStick, string.Format(controllerButtonDescription, "Store All"));
+            ControllerStoreAllButton.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
 
             RemoveControllerButtonHintFromTakeAllButton = Config.Bind(sectionName, nameof(RemoveControllerButtonHintFromTakeAllButton), false, $"Remove the button hint from the 'Take All' button while using a controller for consistency. Especially useful when using the new keybind {nameof(TakeAllKeybind)}.");
             RemoveControllerButtonHintFromTakeAllButton.SettingChanged += (a, b) => ButtonRenderer.OnButtonRelevantSettingChanged(plugin);
@@ -725,6 +735,18 @@ namespace QuickStackStore
             InventorySlotMovement = 0,
             Keybinds = 1,
             KeybindsWhileHoldingModifierKey = 2,
+        }
+
+        // names match the ZInput button names without the 'Joy' prefix
+        internal enum ControllerButton
+        {
+            DPadUp = 0,
+            DPadDown = 1,
+            DPadLeft = 2,
+            DPadRight = 3,
+            LStick = 4,
+            RStick = 5,
+            Back = 6,
         }
 
         internal enum ConfigTemplate

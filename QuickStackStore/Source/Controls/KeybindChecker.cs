@@ -133,39 +133,27 @@ namespace QuickStackStore
                     return;
                 }
 
-                if (ZInput.GetButtonDown(joyGetButtonDownPrefix + joySort))
+                if (IsControllerButtonDown(joySort))
                 {
                     SortModule.DoSort(player);
                     return;
                 }
-                else if (ZInput.GetButtonDown(joyGetButtonDownPrefix + joyStoreAll))
+                else if (IsControllerButtonDown(JoyStoreAll))
                 {
                     StoreTakeAllModule.DoStoreAllWithKeybind(player);
                     return;
                 }
-
-                if (ControllerConfig.ControllerDPadUsageInInventoryGrid.Value == DPadUsage.InventorySlotMovement)
-                {
-                    return;
-                }
-
-                if (ControllerConfig.ControllerDPadUsageInInventoryGrid.Value == DPadUsage.KeybindsWhileHoldingModifierKey
-                    && !IsKeyHeld(ControllerConfig.ControllerDPadUsageModifierKeybind.Value))
-                {
-                    return;
-                }
-
-                if (ZInput.GetButtonDown(joyGetButtonDownPrefix + joyQuickStack))
+                else if (IsControllerButtonDown(JoyQuickStack))
                 {
                     QuickStackModule.DoQuickStack(player);
                     return;
                 }
-                else if (ZInput.GetButtonDown(joyGetButtonDownPrefix + joyRestock))
+                else if (IsControllerButtonDown(joyRestock))
                 {
                     RestockModule.DoRestock(player);
                     return;
                 }
-                else if (ZInput.GetButtonDown(joyGetButtonDownPrefix + joyFavoriteToggling))
+                else if (IsControllerButtonDown(joyFavoriteToggling))
                 {
                     FavoritingMode.ToggleFavoriteToggling();
                     return;
@@ -176,9 +164,34 @@ namespace QuickStackStore
                     return;
                 }
 
-                if (ZInput.GetButtonDown(joyGetButtonDownPrefix + joyTrash))
+                if (IsControllerButtonDown(joyTrash))
                 {
                     TrashModule.TrashOrTrashFlagItem();
+                }
+            }
+
+            private static bool IsControllerButtonDown(string joyButton)
+            {
+                if (!ZInput.GetButtonDown(joyGetButtonDownPrefix + joyButton))
+                {
+                    return false;
+                }
+
+                if (!joyButton.StartsWith("DPad"))
+                {
+                    return true;
+                }
+
+                switch (ControllerConfig.ControllerDPadUsageInInventoryGrid.Value)
+                {
+                    case DPadUsage.InventorySlotMovement:
+                        return false;
+
+                    case DPadUsage.KeybindsWhileHoldingModifierKey:
+                        return IsKeyHeld(ControllerConfig.ControllerDPadUsageModifierKeybind.Value);
+
+                    default:
+                        return true;
                 }
             }
         }
@@ -187,9 +200,9 @@ namespace QuickStackStore
         internal const string joyGetButtonDownPrefix = "Joy";
 
         internal const string joySort = "Back";
-        internal const string joyStoreAll = "RStick";
+        internal static string JoyStoreAll => ControllerConfig.ControllerStoreAllButton.Value.ToString();
 
-        internal const string joyQuickStack = "DPadDown";
+        internal static string JoyQuickStack => ControllerConfig.ControllerQuickStackButton.Value.ToString();
         internal const string joyRestock = "DPadUp";
         internal const string joyFavoriteToggling = "DPadLeft";
         internal const string joyTrash = "DPadRight";
